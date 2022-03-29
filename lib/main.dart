@@ -50,6 +50,15 @@ AppState appReducer(AppState state, action) {
   return state.copyWith(value: incrementReducer(state.value, action));
 }
 
+class CounterConnector extends StatelessWidget {
+  const CounterConnector({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
 enum CounterEvent { increase }
 
 class CounterBloc extends Bloc<CounterEvent, int> {
