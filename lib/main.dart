@@ -36,9 +36,9 @@ class MyHomePage extends ConsumerWidget {
   final String title;
 
   @override
-  Widget build(BuildContext context, WidgetRef watch) {
-    final count = watch(counterProvider);
-    final provider = watch(counterProvider.notifier);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final count = ref.watch(counterProvider);
+    final provider = ref.watch(counterProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
