@@ -5,9 +5,49 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:redux/redux.dart';
 
 void main() {
   runApp(MyApp());
+}
+
+class CounterIncremetAction {}
+
+@immutable
+class AppState {
+  final int value;
+
+  const AppState({this.value = 0});
+
+  factory AppState.initial() => const AppState();
+
+  AppState copyWith({int? value}) {
+    return AppState(value: value ?? this.value);
+  }
+
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AppState &&
+          runtimeType == other.runtimeType &&
+          value == other.value;
+
+  @override
+  int get hashcode => value.hashCode;
+
+  @override
+  String toString() {
+    return 'AppState{value: $value}';
+  }
+}
+
+final incrementReducer = combineReducers<int>([
+  TypedReducer<int, CounterIncremetAction>(_increment),
+]);
+
+int _increment(int value, CounterIncremetAction action) => ++value;
+
+AppState appReducer(AppState state, action) {
+  return state.copyWith(value: incrementReducer(state.value, action));
 }
 
 enum CounterEvent { increase }
