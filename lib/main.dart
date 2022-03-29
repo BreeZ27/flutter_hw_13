@@ -9,31 +9,20 @@ void main() {
   runApp(const MyApp());
 }
 
-enum CounterEvent { increase }
-
 class CounterBloc {
   int value = 0;
 
   final _stateController = StreamController<int>();
-  final _eventController = StreamController<CounterEvent>();
 
   Stream<int> get state => _stateController.stream;
 
-  Sink<CounterEvent> get action => _eventController.sink;
-
-  CounterBloc() {
-    _eventController.stream.listen(_handleEvent);
-  }
-
   void dispose() {
     _stateController.close();
-    _eventController.close();
   }
 
-  void _handleEvent(CounterEvent action) async {
-    if (action == CounterEvent.increase) {
-      value++;
-    }
+  void increment() {
+    value++;
+
     _stateController.add(value);
   }
 }
@@ -101,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => bloc.action.add(CounterEvent.increase),
+        onPressed: () => bloc.increment(),
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
