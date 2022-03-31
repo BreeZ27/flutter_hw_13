@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:redux/redux.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 void main() {
   runApp(MyApp());
@@ -55,46 +56,74 @@ class CounterConnector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
-  }
-}
-
-enum CounterEvent { increase }
-
-class CounterBloc extends Bloc<CounterEvent, int> {
-  int value = 0;
-
-  CounterBloc() : super(0) {
-    on<CounterEvent>((event, emit) => emit(state + 1));
-  }
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: BlocProvider<CounterBloc>(
-          create: (_) => CounterBloc(),
-          child: MyHomePage(title: 'Flutter Demo Home Page')),
+    return StoreConnector<AppState, _ViewModel>(
+      converter: _ViewModel.fromStore,
+      builder: (context, vm) {
+        return MyHomePage(
+          title: 'Flutter_HW_13',
+          value: vm.value,
+          increase: vm.onIncrease,
+        );
+      },
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+class _ViewModel {
+  final int value;
+  final VoidCallback onIncrease;
 
+  _ViewModel({required this.value, required this.onIncrease});
+
+  static _ViewModel fromStore(Store<AppState> store) => _ViewModel(
+        value: store.state.value,
+        onIncrease: () => store.dispatch(
+          CounterIncremetAction(),
+        ),
+      );
+}
+
+class MyApp extends StatelessWidget {
+  MyApp({Key? key}) : super(key: key);
+
+  final store = Store(appReducer, initialState: AppState.initial());
+
+  @override
+  Widget build(BuildContext context) {
+    return StoreProvider<AppState>(
+        store: store,
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: CounterConnector(),
+        ));
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({
+    Key? key,
+    required this.title,
+    required this.value,
+    required this.increase,
+  }) : super(key: key);
+
+  final String title;
+  final int value;
+  final VoidCallback increase;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(widget.title),
       ),
       body: Center(
         child: Column(
@@ -103,17 +132,15 @@ class MyHomePage extends StatelessWidget {
             const Text(
               'You have pushed the button this many times:',
             ),
-            BlocBuilder<CounterBloc, int>(
-              builder: (_, state) => Text(
-                state.toString(),
-                style: Theme.of(context).textTheme.headline4,
-              ),
+            Text(
+              widget.value.toString(),
+              style: Theme.of(context).textTheme.headline4,
             )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.read<CounterBloc>().add(CounterEvent.increase),
+        onPressed: widget.increase,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
