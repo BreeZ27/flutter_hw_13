@@ -1,1 +1,1 @@
-export 'src/model_file.dart';
+export 'src/product_data.dart';

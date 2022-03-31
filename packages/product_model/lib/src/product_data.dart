@@ -6,6 +6,5 @@ part 'product_data.freezed.dart';
 class ProductData with _$ProductData {
   const factory ProductData({
     required int id,
-    required String name,
   }) = _ProductData;
 }
