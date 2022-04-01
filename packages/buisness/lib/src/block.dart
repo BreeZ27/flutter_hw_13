@@ -24,13 +24,13 @@ class ProductBlock {
               ProductBlockState.loaded(prodData: productService.array.values),
             );
           },
-          // getProd: (event) async {
-          //   return _stateContrl.add(
-          //     ProductBlockState.loaded(
-          //       prodData: productService.getProductById(event.prodId),
-          //     ),
-          //   );
-          // },
+          getProd: (event) async {
+            return _stateContrl.add(
+              ProductBlockState.loaded(
+                prodData: [productService.getProductById(event.prodId)],
+              ),
+            );
+          },
           setProd: (event) async {
             await productService.createOne();
             return _stateContrl.add(
@@ -74,8 +74,8 @@ class ProductBlockState with _$ProductBlockState {
 @freezed
 class ProductBlockEvent with _$ProductBlockEvent {
   const factory ProductBlockEvent.init() = _ProductInitEvent;
-  // const factory ProductBlockEvent.getProd({required int prodId}) =
-  //     _ProductGetEvent;
+  const factory ProductBlockEvent.getProd({required int prodId}) =
+      _ProductGetEvent;
   const factory ProductBlockEvent.setProd() = _ProductSetEvent;
   const factory ProductBlockEvent.giveProd() = _ProductGiveEvent;
 }

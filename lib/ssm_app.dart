@@ -25,10 +25,10 @@ class _MyAppState extends State<MyApp> {
     return Provider<ProductBlock>(
       create: (_) => _prodBlock,
       child: MaterialApp(
-        title: 'Flutter_hw_12',
+        title: 'Flutter_hw_13',
         theme: ThemeData(primarySwatch: Colors.blue),
         home: const MyHomePage(
-          title: 'Flutter_hw_12',
+          title: 'Flutter_hw_13',
         ),
       ),
     );
