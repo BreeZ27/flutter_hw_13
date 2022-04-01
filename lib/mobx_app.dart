@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'state.dart';
 
-class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+class MobXApp extends StatelessWidget {
+  const MobXApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +44,11 @@ class MyHomePage extends StatelessWidget {
               'You have pushed the button this many times:',
             ),
             Observer(
-                builder: (context) => Text(
-                      state.value.toString(),
-                      style: Theme.of(context).textTheme.headline4,
-                    ))
+              builder: (context) => Text(
+                state.value.toString(),
+                style: Theme.of(context).textTheme.headline4,
+              ),
+            )
           ],
         ),
       ),

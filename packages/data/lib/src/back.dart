@@ -6,4 +6,11 @@ abstract class ProductService {
   Future<ProductData> createOne();
   ProductData getProductById(int id);
   String productsShow();
+  Iterable<ProductData> give();
+}
+
+abstract class BoxService {
+  List<ProductData> array = [];
+  void addProductById(int id);
+  // Iterable<ProductData> give();
 }

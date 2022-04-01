@@ -41,4 +41,19 @@ class MyProductService implements ProductService {
   String productsShow() {
     return array.toString();
   }
+
+  Iterable<ProductData> give() {
+    return array.values;
+  }
+}
+
+@LazySingleton(as: BoxService)
+class MyBoxService implements BoxService {
+  @override
+  List<ProductData> array = [];
+
+  @override
+  void addProductById(int id) {
+    // array.add(id);
+  }
 }

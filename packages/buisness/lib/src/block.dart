@@ -18,25 +18,26 @@ class ProductBlock {
   ProductBlock({required this.productService}) {
     _eventContrl.stream.listen((event) {
       event.map<void>(
-        init: (_) async {
-          _stateContrl.add(const ProductBlockState.loading());
-          _stateContrl.add(
-            ProductBlockState.loaded(
-              prodData: await productService.createOne(),
-            ),
-          );
-        },
-        getProd: (event) async => _stateContrl.add(
-          ProductBlockState.loaded(
-            prodData: productService.getProductById(event.prodId),
-          ),
-        ),
-        setProd: (event) async => _stateContrl.add(
-          ProductBlockState.loaded(
-            prodData: await productService.createOne(),
-          ),
-        ),
-      );
+          init: (_) async {
+            _stateContrl.add(const ProductBlockState.loading());
+            _stateContrl.add(
+              ProductBlockState.loaded(prodData: productService.array.values),
+            );
+          },
+          // getProd: (event) async {
+          //   return _stateContrl.add(
+          //     ProductBlockState.loaded(
+          //       prodData: productService.getProductById(event.prodId),
+          //     ),
+          //   );
+          // },
+          setProd: (event) async {
+            await productService.createOne();
+            return _stateContrl.add(
+              ProductBlockState.loaded(prodData: productService.array.values),
+            );
+          },
+          giveProd: (event) {});
     });
   }
 
@@ -50,8 +51,12 @@ class ProductBlock {
     _stateContrl.close();
   }
 
-  void show() {
-    productService.productsShow();
+  show() {
+    return productService.productsShow();
+  }
+
+  void give() {
+    productService.give();
   }
 
   void myCleaner() {
@@ -62,30 +67,15 @@ class ProductBlock {
 @freezed
 class ProductBlockState with _$ProductBlockState {
   const factory ProductBlockState.loading() = ProductLoadingState;
-  const factory ProductBlockState.loaded({required ProductData prodData}) =
-      ProductLoadedState;
+  const factory ProductBlockState.loaded(
+      {required Iterable<ProductData> prodData}) = ProductLoadedState;
 }
 
 @freezed
 class ProductBlockEvent with _$ProductBlockEvent {
   const factory ProductBlockEvent.init() = _ProductInitEvent;
-  const factory ProductBlockEvent.getProd({required int prodId}) =
-      _ProductGetEvent;
+  // const factory ProductBlockEvent.getProd({required int prodId}) =
+  //     _ProductGetEvent;
   const factory ProductBlockEvent.setProd() = _ProductSetEvent;
+  const factory ProductBlockEvent.giveProd() = _ProductGiveEvent;
 }
-
-
-
-// @freezed
-// class ProductBlockState with _$ProductBlockState {
-//   const factory ProductBlockState.loading(
-//       {required Map<int, ProductData> productsCreator}) = ProductLoadingState;
-//   const factory ProductBlockState.loaded() = ProductLoadedState;
-// }
-
-// @freezed
-// class ProductBlockEvent with _$ProductBlockEvent {
-//   const factory ProductBlockEvent.init() = _ProductInitEvent;
-//   const factory ProductBlockEvent.setUser({required int prodId}) =
-//       _ProductSetEvent;
-// }
