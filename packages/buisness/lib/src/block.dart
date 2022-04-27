@@ -9,35 +9,38 @@ part 'block.freezed.dart';
 @injectable
 class ProductBlock {
   final ProductService productService;
+  final BoxService boxService;
   final StreamController<ProductBlockEvent> _eventContrl = StreamController();
   final StreamController<ProductBlockState> _stateContrl =
       StreamController.broadcast();
 
   Stream<ProductBlockState> get state => _stateContrl.stream;
 
-  ProductBlock({required this.productService}) {
+  ProductBlock({required this.productService, required this.boxService}) {
     _eventContrl.stream.listen((event) {
-      event.map<void>(
-          init: (_) async {
-            _stateContrl.add(const ProductBlockState.loading());
-            _stateContrl.add(
-              ProductBlockState.loaded(prodData: productService.array.values),
-            );
-          },
-          getProd: (event) async {
-            return _stateContrl.add(
-              ProductBlockState.loaded(
-                prodData: [productService.getProductById(event.prodId)],
-              ),
-            );
-          },
-          setProd: (event) async {
-            await productService.createOne();
-            return _stateContrl.add(
-              ProductBlockState.loaded(prodData: productService.array.values),
-            );
-          },
-          giveProd: (event) {});
+      event.map<void>(init: (_) async {
+        _stateContrl.add(const ProductBlockState.loading());
+        _stateContrl.add(
+          ProductBlockState.loaded(prodData: productService.array.values),
+        );
+      }, getProd: (event) async {
+        return _stateContrl.add(
+          ProductBlockState.loaded(
+            prodData: [productService.getProductById(event.prodId)],
+          ),
+        );
+      }, setProd: (event) async {
+        await productService.createOne();
+        return _stateContrl.add(
+          ProductBlockState.loaded(prodData: productService.array.values),
+        );
+      }, giveProd: (event) {
+        return _stateContrl
+            .add(ProductBlockState.loaded(prodData: boxService.array));
+      }, addProd: (event) {
+        return _stateContrl
+            .add(ProductBlockState.loaded(prodData: boxService.array));
+      });
     });
   }
 
@@ -54,6 +57,10 @@ class ProductBlock {
   show() {
     return productService.productsShow();
   }
+
+  // boxShow() {
+  //   return BoxService.productsShow();
+  // }
 
   void give() {
     productService.give();
@@ -78,4 +85,5 @@ class ProductBlockEvent with _$ProductBlockEvent {
       _ProductGetEvent;
   const factory ProductBlockEvent.setProd() = _ProductSetEvent;
   const factory ProductBlockEvent.giveProd() = _ProductGiveEvent;
+  const factory ProductBlockEvent.addProd() = _ProductAddEvent;
 }

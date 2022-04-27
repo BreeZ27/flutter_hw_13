@@ -352,6 +352,10 @@ class _$ProductBlockEventTearOff {
   _ProductGiveEvent giveProd() {
     return const _ProductGiveEvent();
   }
+
+  _ProductAddEvent addProd() {
+    return const _ProductAddEvent();
+  }
 }
 
 /// @nodoc
@@ -365,6 +369,7 @@ mixin _$ProductBlockEvent {
     required TResult Function(int prodId) getProd,
     required TResult Function() setProd,
     required TResult Function() giveProd,
+    required TResult Function() addProd,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -373,6 +378,7 @@ mixin _$ProductBlockEvent {
     TResult Function(int prodId)? getProd,
     TResult Function()? setProd,
     TResult Function()? giveProd,
+    TResult Function()? addProd,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -381,6 +387,7 @@ mixin _$ProductBlockEvent {
     TResult Function(int prodId)? getProd,
     TResult Function()? setProd,
     TResult Function()? giveProd,
+    TResult Function()? addProd,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -390,6 +397,7 @@ mixin _$ProductBlockEvent {
     required TResult Function(_ProductGetEvent value) getProd,
     required TResult Function(_ProductSetEvent value) setProd,
     required TResult Function(_ProductGiveEvent value) giveProd,
+    required TResult Function(_ProductAddEvent value) addProd,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -398,6 +406,7 @@ mixin _$ProductBlockEvent {
     TResult Function(_ProductGetEvent value)? getProd,
     TResult Function(_ProductSetEvent value)? setProd,
     TResult Function(_ProductGiveEvent value)? giveProd,
+    TResult Function(_ProductAddEvent value)? addProd,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -406,6 +415,7 @@ mixin _$ProductBlockEvent {
     TResult Function(_ProductGetEvent value)? getProd,
     TResult Function(_ProductSetEvent value)? setProd,
     TResult Function(_ProductGiveEvent value)? giveProd,
+    TResult Function(_ProductAddEvent value)? addProd,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -473,6 +483,7 @@ class _$_ProductInitEvent implements _ProductInitEvent {
     required TResult Function(int prodId) getProd,
     required TResult Function() setProd,
     required TResult Function() giveProd,
+    required TResult Function() addProd,
   }) {
     return init();
   }
@@ -484,6 +495,7 @@ class _$_ProductInitEvent implements _ProductInitEvent {
     TResult Function(int prodId)? getProd,
     TResult Function()? setProd,
     TResult Function()? giveProd,
+    TResult Function()? addProd,
   }) {
     return init?.call();
   }
@@ -495,6 +507,7 @@ class _$_ProductInitEvent implements _ProductInitEvent {
     TResult Function(int prodId)? getProd,
     TResult Function()? setProd,
     TResult Function()? giveProd,
+    TResult Function()? addProd,
     required TResult orElse(),
   }) {
     if (init != null) {
@@ -510,6 +523,7 @@ class _$_ProductInitEvent implements _ProductInitEvent {
     required TResult Function(_ProductGetEvent value) getProd,
     required TResult Function(_ProductSetEvent value) setProd,
     required TResult Function(_ProductGiveEvent value) giveProd,
+    required TResult Function(_ProductAddEvent value) addProd,
   }) {
     return init(this);
   }
@@ -521,6 +535,7 @@ class _$_ProductInitEvent implements _ProductInitEvent {
     TResult Function(_ProductGetEvent value)? getProd,
     TResult Function(_ProductSetEvent value)? setProd,
     TResult Function(_ProductGiveEvent value)? giveProd,
+    TResult Function(_ProductAddEvent value)? addProd,
   }) {
     return init?.call(this);
   }
@@ -532,6 +547,7 @@ class _$_ProductInitEvent implements _ProductInitEvent {
     TResult Function(_ProductGetEvent value)? getProd,
     TResult Function(_ProductSetEvent value)? setProd,
     TResult Function(_ProductGiveEvent value)? giveProd,
+    TResult Function(_ProductAddEvent value)? addProd,
     required TResult orElse(),
   }) {
     if (init != null) {
@@ -614,6 +630,7 @@ class _$_ProductGetEvent implements _ProductGetEvent {
     required TResult Function(int prodId) getProd,
     required TResult Function() setProd,
     required TResult Function() giveProd,
+    required TResult Function() addProd,
   }) {
     return getProd(prodId);
   }
@@ -625,6 +642,7 @@ class _$_ProductGetEvent implements _ProductGetEvent {
     TResult Function(int prodId)? getProd,
     TResult Function()? setProd,
     TResult Function()? giveProd,
+    TResult Function()? addProd,
   }) {
     return getProd?.call(prodId);
   }
@@ -636,6 +654,7 @@ class _$_ProductGetEvent implements _ProductGetEvent {
     TResult Function(int prodId)? getProd,
     TResult Function()? setProd,
     TResult Function()? giveProd,
+    TResult Function()? addProd,
     required TResult orElse(),
   }) {
     if (getProd != null) {
@@ -651,6 +670,7 @@ class _$_ProductGetEvent implements _ProductGetEvent {
     required TResult Function(_ProductGetEvent value) getProd,
     required TResult Function(_ProductSetEvent value) setProd,
     required TResult Function(_ProductGiveEvent value) giveProd,
+    required TResult Function(_ProductAddEvent value) addProd,
   }) {
     return getProd(this);
   }
@@ -662,6 +682,7 @@ class _$_ProductGetEvent implements _ProductGetEvent {
     TResult Function(_ProductGetEvent value)? getProd,
     TResult Function(_ProductSetEvent value)? setProd,
     TResult Function(_ProductGiveEvent value)? giveProd,
+    TResult Function(_ProductAddEvent value)? addProd,
   }) {
     return getProd?.call(this);
   }
@@ -673,6 +694,7 @@ class _$_ProductGetEvent implements _ProductGetEvent {
     TResult Function(_ProductGetEvent value)? getProd,
     TResult Function(_ProductSetEvent value)? setProd,
     TResult Function(_ProductGiveEvent value)? giveProd,
+    TResult Function(_ProductAddEvent value)? addProd,
     required TResult orElse(),
   }) {
     if (getProd != null) {
@@ -736,6 +758,7 @@ class _$_ProductSetEvent implements _ProductSetEvent {
     required TResult Function(int prodId) getProd,
     required TResult Function() setProd,
     required TResult Function() giveProd,
+    required TResult Function() addProd,
   }) {
     return setProd();
   }
@@ -747,6 +770,7 @@ class _$_ProductSetEvent implements _ProductSetEvent {
     TResult Function(int prodId)? getProd,
     TResult Function()? setProd,
     TResult Function()? giveProd,
+    TResult Function()? addProd,
   }) {
     return setProd?.call();
   }
@@ -758,6 +782,7 @@ class _$_ProductSetEvent implements _ProductSetEvent {
     TResult Function(int prodId)? getProd,
     TResult Function()? setProd,
     TResult Function()? giveProd,
+    TResult Function()? addProd,
     required TResult orElse(),
   }) {
     if (setProd != null) {
@@ -773,6 +798,7 @@ class _$_ProductSetEvent implements _ProductSetEvent {
     required TResult Function(_ProductGetEvent value) getProd,
     required TResult Function(_ProductSetEvent value) setProd,
     required TResult Function(_ProductGiveEvent value) giveProd,
+    required TResult Function(_ProductAddEvent value) addProd,
   }) {
     return setProd(this);
   }
@@ -784,6 +810,7 @@ class _$_ProductSetEvent implements _ProductSetEvent {
     TResult Function(_ProductGetEvent value)? getProd,
     TResult Function(_ProductSetEvent value)? setProd,
     TResult Function(_ProductGiveEvent value)? giveProd,
+    TResult Function(_ProductAddEvent value)? addProd,
   }) {
     return setProd?.call(this);
   }
@@ -795,6 +822,7 @@ class _$_ProductSetEvent implements _ProductSetEvent {
     TResult Function(_ProductGetEvent value)? getProd,
     TResult Function(_ProductSetEvent value)? setProd,
     TResult Function(_ProductGiveEvent value)? giveProd,
+    TResult Function(_ProductAddEvent value)? addProd,
     required TResult orElse(),
   }) {
     if (setProd != null) {
@@ -853,6 +881,7 @@ class _$_ProductGiveEvent implements _ProductGiveEvent {
     required TResult Function(int prodId) getProd,
     required TResult Function() setProd,
     required TResult Function() giveProd,
+    required TResult Function() addProd,
   }) {
     return giveProd();
   }
@@ -864,6 +893,7 @@ class _$_ProductGiveEvent implements _ProductGiveEvent {
     TResult Function(int prodId)? getProd,
     TResult Function()? setProd,
     TResult Function()? giveProd,
+    TResult Function()? addProd,
   }) {
     return giveProd?.call();
   }
@@ -875,6 +905,7 @@ class _$_ProductGiveEvent implements _ProductGiveEvent {
     TResult Function(int prodId)? getProd,
     TResult Function()? setProd,
     TResult Function()? giveProd,
+    TResult Function()? addProd,
     required TResult orElse(),
   }) {
     if (giveProd != null) {
@@ -890,6 +921,7 @@ class _$_ProductGiveEvent implements _ProductGiveEvent {
     required TResult Function(_ProductGetEvent value) getProd,
     required TResult Function(_ProductSetEvent value) setProd,
     required TResult Function(_ProductGiveEvent value) giveProd,
+    required TResult Function(_ProductAddEvent value) addProd,
   }) {
     return giveProd(this);
   }
@@ -901,6 +933,7 @@ class _$_ProductGiveEvent implements _ProductGiveEvent {
     TResult Function(_ProductGetEvent value)? getProd,
     TResult Function(_ProductSetEvent value)? setProd,
     TResult Function(_ProductGiveEvent value)? giveProd,
+    TResult Function(_ProductAddEvent value)? addProd,
   }) {
     return giveProd?.call(this);
   }
@@ -912,6 +945,7 @@ class _$_ProductGiveEvent implements _ProductGiveEvent {
     TResult Function(_ProductGetEvent value)? getProd,
     TResult Function(_ProductSetEvent value)? setProd,
     TResult Function(_ProductGiveEvent value)? giveProd,
+    TResult Function(_ProductAddEvent value)? addProd,
     required TResult orElse(),
   }) {
     if (giveProd != null) {
@@ -923,4 +957,127 @@ class _$_ProductGiveEvent implements _ProductGiveEvent {
 
 abstract class _ProductGiveEvent implements ProductBlockEvent {
   const factory _ProductGiveEvent() = _$_ProductGiveEvent;
+}
+
+/// @nodoc
+abstract class _$ProductAddEventCopyWith<$Res> {
+  factory _$ProductAddEventCopyWith(
+          _ProductAddEvent value, $Res Function(_ProductAddEvent) then) =
+      __$ProductAddEventCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$ProductAddEventCopyWithImpl<$Res>
+    extends _$ProductBlockEventCopyWithImpl<$Res>
+    implements _$ProductAddEventCopyWith<$Res> {
+  __$ProductAddEventCopyWithImpl(
+      _ProductAddEvent _value, $Res Function(_ProductAddEvent) _then)
+      : super(_value, (v) => _then(v as _ProductAddEvent));
+
+  @override
+  _ProductAddEvent get _value => super._value as _ProductAddEvent;
+}
+
+/// @nodoc
+
+class _$_ProductAddEvent implements _ProductAddEvent {
+  const _$_ProductAddEvent();
+
+  @override
+  String toString() {
+    return 'ProductBlockEvent.addProd()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _ProductAddEvent);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function(int prodId) getProd,
+    required TResult Function() setProd,
+    required TResult Function() giveProd,
+    required TResult Function() addProd,
+  }) {
+    return addProd();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function(int prodId)? getProd,
+    TResult Function()? setProd,
+    TResult Function()? giveProd,
+    TResult Function()? addProd,
+  }) {
+    return addProd?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function(int prodId)? getProd,
+    TResult Function()? setProd,
+    TResult Function()? giveProd,
+    TResult Function()? addProd,
+    required TResult orElse(),
+  }) {
+    if (addProd != null) {
+      return addProd();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_ProductInitEvent value) init,
+    required TResult Function(_ProductGetEvent value) getProd,
+    required TResult Function(_ProductSetEvent value) setProd,
+    required TResult Function(_ProductGiveEvent value) giveProd,
+    required TResult Function(_ProductAddEvent value) addProd,
+  }) {
+    return addProd(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_ProductInitEvent value)? init,
+    TResult Function(_ProductGetEvent value)? getProd,
+    TResult Function(_ProductSetEvent value)? setProd,
+    TResult Function(_ProductGiveEvent value)? giveProd,
+    TResult Function(_ProductAddEvent value)? addProd,
+  }) {
+    return addProd?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_ProductInitEvent value)? init,
+    TResult Function(_ProductGetEvent value)? getProd,
+    TResult Function(_ProductSetEvent value)? setProd,
+    TResult Function(_ProductGiveEvent value)? giveProd,
+    TResult Function(_ProductAddEvent value)? addProd,
+    required TResult orElse(),
+  }) {
+    if (addProd != null) {
+      return addProd(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ProductAddEvent implements ProductBlockEvent {
+  const factory _ProductAddEvent() = _$_ProductAddEvent;
 }

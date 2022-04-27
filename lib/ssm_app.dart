@@ -98,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             children: [
                               Container(
                                 alignment: Alignment.topLeft,
-                                padding: EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(8),
                                 child: Text(
                                   'Полка товаров',
                                   style: Theme.of(context).textTheme.headline6,
@@ -106,7 +106,8 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                               ...state.prodData.map((e) => ListTile(
                                     title: Text('Товар ${e.id.toString()}'),
-                                    trailing: Icon(Icons.add_box),
+                                    trailing: const Icon(Icons.add_box),
+                                    onTap: () {},
                                   )),
                               // read != null ? Text(read) : Text('None')
                             ],
@@ -121,14 +122,18 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Column(
                         children: [
                           Container(
-                            padding: EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(8),
                             alignment: Alignment.topLeft,
                             child: Text(
                               'Корзина',
                               style: Theme.of(context).textTheme.headline6,
                             ),
                           ),
-                          SingleChildScrollView()
+                          SingleChildScrollView(
+                            child: Column(
+                              children: [],
+                            ),
+                          )
                         ],
                       ))
                     ],
