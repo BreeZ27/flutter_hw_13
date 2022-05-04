@@ -1,0 +1,85 @@
+{
+    // Используйте IntelliSense, чтобы узнать о возможных атрибутах.
+    // Наведите указатель мыши, чтобы просмотреть описания существующих атрибутов.
+    // Для получения дополнительной информации посетите: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "flutter_hw_13",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flutter_hw_13 (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flutter_hw_13 (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "buisness",
+            "cwd": "packages\\buisness",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "buisness (profile mode)",
+            "cwd": "packages\\buisness",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "buisness (release mode)",
+            "cwd": "packages\\buisness",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "data",
+            "cwd": "packages\\data",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "data (profile mode)",
+            "cwd": "packages\\data",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "data (release mode)",
+            "cwd": "packages\\data",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "product_model",
+            "cwd": "packages\\product_model",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "product_model (profile mode)",
+            "cwd": "packages\\product_model",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "product_model (release mode)",
+            "cwd": "packages\\product_model",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

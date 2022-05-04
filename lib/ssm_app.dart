@@ -25,6 +25,7 @@ class _MyAppState extends State<MyApp> {
     return Provider<ProductBlock>(
       create: (_) => _prodBlock,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter_hw_13',
         theme: ThemeData(primarySwatch: Colors.blue),
         home: const MyHomePage(
@@ -64,9 +65,16 @@ class _MyHomePageState extends State<MyHomePage> {
         );
   }
 
+  void _boxUpdate(ProductBlockState state, e) {
+    print(context.read<ProductBlock>().boxService.array);
+    return context.read<ProductBlock>().add(
+          ProductBlockEvent.addProd(),
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
-    var read = context.read<ProductBlock>().show();
+    // var read = context.read<ProductBlock>().show();
 
     return StreamBuilder<ProductBlockState>(
       stream: context.read<ProductBlock>().state,
@@ -107,7 +115,10 @@ class _MyHomePageState extends State<MyHomePage> {
                               ...state.prodData.map((e) => ListTile(
                                     title: Text('Товар ${e.id.toString()}'),
                                     trailing: const Icon(Icons.add_box),
-                                    onTap: () {},
+                                    onTap: () {
+                                      _boxUpdate(state, e);
+                                      // e.id;
+                                    },
                                   )),
                               // read != null ? Text(read) : Text('None')
                             ],
@@ -131,7 +142,19 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           SingleChildScrollView(
                             child: Column(
-                              children: [],
+                              children: [
+                                ...context
+                                    .read<ProductBlock>()
+                                    .boxService
+                                    .array
+                                    .map(
+                                      (e) => ListTile(
+                                        title: Text(
+                                          e.id.toString(),
+                                        ),
+                                      ),
+                                    )
+                              ],
                             ),
                           )
                         ],

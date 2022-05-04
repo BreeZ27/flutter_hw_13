@@ -11,6 +11,6 @@ abstract class ProductService {
 
 abstract class BoxService {
   List<ProductData> array = [];
-  void addProductById(int id);
+  void addProduct(ProductData item);
   // Iterable<ProductData> give();
 }

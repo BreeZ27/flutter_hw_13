@@ -53,8 +53,8 @@ class MyBoxService implements BoxService {
   List<ProductData> array = [];
 
   @override
-  void addProductById(int id) {
-    var item = MyProductService().array[id];
+  void addProduct(ProductData elmt) {
+    var item = MyProductService().array[elmt];
     array.add(item!);
   }
 }

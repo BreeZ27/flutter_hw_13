@@ -34,10 +34,8 @@ class ProductBlock {
         return _stateContrl.add(
           ProductBlockState.loaded(prodData: productService.array.values),
         );
-      }, giveProd: (event) {
-        return _stateContrl
-            .add(ProductBlockState.loaded(prodData: boxService.array));
       }, addProd: (event) {
+        // boxService.addProductById(event);
         return _stateContrl
             .add(ProductBlockState.loaded(prodData: boxService.array));
       });
@@ -53,14 +51,6 @@ class ProductBlock {
     _eventContrl.close();
     _stateContrl.close();
   }
-
-  show() {
-    return productService.productsShow();
-  }
-
-  // boxShow() {
-  //   return BoxService.productsShow();
-  // }
 
   void give() {
     productService.give();
@@ -84,6 +74,5 @@ class ProductBlockEvent with _$ProductBlockEvent {
   const factory ProductBlockEvent.getProd({required int prodId}) =
       _ProductGetEvent;
   const factory ProductBlockEvent.setProd() = _ProductSetEvent;
-  const factory ProductBlockEvent.giveProd() = _ProductGiveEvent;
   const factory ProductBlockEvent.addProd() = _ProductAddEvent;
 }
