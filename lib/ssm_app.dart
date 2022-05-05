@@ -141,6 +141,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                   style: Theme.of(context).textTheme.headline6,
                                 ),
                               ),
+                              // context.read<ProductBlock>().goods().map(
+                              //       (e) => ListTile(
+                              //         title: Text('Товар ${e.id.toString()}'),
+                              //         trailing: const Icon(Icons.add_box),
+                              //         onTap: () {
+                              //           _cartUpdate(state, e);
+                              //         },
+                              //       ),
+                              //     )
                               ...state.prodData.array.values.map(
                                 (e) => ListTile(
                                   title: Text('Товар ${e.id.toString()}'),
@@ -195,7 +204,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 floatingActionButton: FloatingActionButton(
-                  onPressed: () => _cartCleaner,
+                  onPressed: () => _cartCleaner(state),
                   // onPressed: () => _prodUpdate(state),
                   tooltip: 'Increment',
                   child: const Icon(Icons.delete),

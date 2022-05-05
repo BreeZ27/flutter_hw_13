@@ -62,6 +62,10 @@ class ProductBlock {
     productService.cleane();
   }
 
+  goods() {
+    return productService.array.values;
+  }
+
   show() {
     return productService.out;
   }
