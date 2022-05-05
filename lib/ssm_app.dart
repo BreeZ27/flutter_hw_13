@@ -86,8 +86,11 @@ class _MyHomePageState extends State<MyHomePage> {
   //       );
   // }
   void _cartUpdate(item) {
-    // context.read<ProductBlock>().productService.myCart.add(item);
     context.read<ProductBlock>().addToCart(item);
+  }
+
+  void _cartCleaner() {
+    context.read<ProductBlock>().cleane();
   }
   // void _cartUpdate(ProductBlockState state, item) {
   //   // context.read<ProductBlock>().productService.myCart.add(item);
@@ -115,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             'Товар ${e.id}',
                           ),
                           trailing: Icon(Icons.add_box),
-                          onTap: () => _cartUpdate,
+                          onTap: () => _cartUpdate(e),
                         ),
                       )
                 ],
@@ -127,11 +130,22 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               children: [
                 Text('Корзина'),
-                ...context.watch<ProductBlock>().show().keys.map((e) => Text(e))
+                ...context.watch<ProductBlock>().show().keys.map(
+                      (e) => ListTile(
+                        title: Text(
+                          'Товар ${e.id}',
+                        ),
+                        trailing: Text(
+                            'x ${context.watch<ProductBlock>().show()[e]}'),
+                      ),
+                    ),
               ],
             ),
           ))
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _cartCleaner(),
       ),
     );
   }

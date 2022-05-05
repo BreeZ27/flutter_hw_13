@@ -47,7 +47,8 @@ class MyProductService implements ProductService {
       }
     }
     print('DATA: give works');
-    return out = _answer;
+    out = _answer;
+    return out;
   }
 
   @override
