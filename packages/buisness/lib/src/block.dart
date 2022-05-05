@@ -21,26 +21,28 @@ class ProductBlock {
         _stateContrl.add(const ProductBlockState.loading());
         await productService.createProducts(5);
         _stateContrl.add(
-          // ProductBlockState.loaded(prodData: productService.array.values),
           ProductBlockState.loaded(prodData: productService),
         );
       }, setProd: (event) async {
         await productService.createOne();
         return _stateContrl.add(
-          // ProductBlockState.loaded(prodData: productService.array.values),
           ProductBlockState.loaded(prodData: productService),
         );
       }, addProd: (event) async {
         await productService.give();
         return _stateContrl
             .add(ProductBlockState.loaded(prodData: productService));
+      }, cleanProd: (event) {
+        productService.cleane();
+        return _stateContrl
+            .add(ProductBlockState.loaded(prodData: productService));
       });
     });
   }
 
-  // void addToCart(item) {
-  //   mycart.add(item);
-  // }
+  void addToCart(item) {
+    productService.myCart.add(item);
+  }
 
   void add(ProductBlockEvent event) {
     if (_eventContrl.isClosed) return;
@@ -56,8 +58,12 @@ class ProductBlock {
     productService.give();
   }
 
-  void myCleaner() {
-    productService.array.clear();
+  void cleane() {
+    productService.cleane();
+  }
+
+  show() {
+    return productService.out;
   }
 }
 
@@ -74,4 +80,5 @@ class ProductBlockEvent with _$ProductBlockEvent {
   const factory ProductBlockEvent.init() = _ProductInitEvent;
   const factory ProductBlockEvent.setProd() = _ProductSetEvent;
   const factory ProductBlockEvent.addProd() = _ProductAddEvent;
+  const factory ProductBlockEvent.cleanProd() = _ProductCleanEvent;
 }

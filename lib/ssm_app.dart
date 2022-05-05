@@ -40,6 +40,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    print('build');
     return Provider<ProductBlock>(
       create: (_) => _prodBlock,
       child: MaterialApp(
@@ -83,8 +84,17 @@ class _MyHomePageState extends State<MyHomePage> {
         );
   }
 
+  void _cartCleaner(ProductBlockState state) {
+    context.read<ProductBlock>().cleane();
+
+    return context.read<ProductBlock>().add(
+          const ProductBlockEvent.addProd(),
+        );
+  }
+
   void _cartUpdate(ProductBlockState state, item) {
-    context.read<ProductBlock>().productService.myCart.add(item);
+    // context.read<ProductBlock>().productService.myCart.add(item);
+    context.read<ProductBlock>().addToCart(item);
 
     return context.read<ProductBlock>().add(
           const ProductBlockEvent.addProd(),
@@ -137,10 +147,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                   trailing: const Icon(Icons.add_box),
                                   onTap: () {
                                     _cartUpdate(state, e);
-                                    // state.prodData.createProducts(5);
-                                    // state.prodData.myCart.add(e);
-                                    // state.prodData.give();
-                                    // Cart().add(e);
                                   },
                                 ),
                               ),
@@ -153,38 +159,46 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: Colors.black,
                       ),
                       Expanded(
-                          child: Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              'Корзина',
-                              style: Theme.of(context).textTheme.headline6,
+                          child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'Корзина',
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
                             ),
-                          ),
-                          SingleChildScrollView(
-                            child: Column(
+                            Column(
                               children: [
-                                ...state.prodData.out.keys.map(
-                                  (e) => ListTile(
-                                    title: Text('Товар ${e.id}'),
-                                    trailing:
-                                        Text('x ${state.prodData.out[e]}'),
-                                  ),
-                                ),
+                                ...context.read<ProductBlock>().show().keys.map(
+                                      (e) => ListTile(
+                                        title: Text('Товар ${e.id}'),
+                                        trailing:
+                                            Text('x ${state.prodData.out[e]}'),
+                                      ),
+                                    )
+                                // ...state.prodData.out.keys.map(
+                                //   (e) => ListTile(
+                                //     title: Text('Товар ${e.id}'),
+                                //     trailing:
+                                //         Text('x ${state.prodData.out[e]}'),
+                                //   ),
+                                // ),
                               ],
-                            ),
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ))
                     ],
                   ),
                 ),
                 floatingActionButton: FloatingActionButton(
-                  onPressed: () => _prodUpdate(state),
+                  onPressed: () => _cartCleaner,
+                  // onPressed: () => _prodUpdate(state),
                   tooltip: 'Increment',
-                  child: const Icon(Icons.add),
+                  child: const Icon(Icons.delete),
                   elevation: 50,
                 ),
               );

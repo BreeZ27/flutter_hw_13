@@ -33,6 +33,7 @@ class MyProductService implements ProductService {
     return _new;
   }
 
+  @override
   Future<Map<ProductData, int>> give() async {
     Map<ProductData, int> _answer = {};
 
@@ -47,6 +48,12 @@ class MyProductService implements ProductService {
     }
 
     return out = _answer;
+  }
+
+  @override
+  cleane() {
+    myCart.clear();
+    out.clear();
   }
 
   @override
