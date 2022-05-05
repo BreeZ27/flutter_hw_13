@@ -46,7 +46,7 @@ class MyProductService implements ProductService {
         _answer[item] = _answer[item]! + 1;
       }
     }
-
+    print('DATA: give works');
     return out = _answer;
   }
 
