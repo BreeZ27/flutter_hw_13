@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:data/data.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:product_model/model.dart';
@@ -7,7 +8,7 @@ import 'package:product_model/model.dart';
 part 'block.freezed.dart';
 
 @injectable
-class ProductBlock {
+class ProductBlock extends ChangeNotifier {
   final ProductService productService;
   final StreamController<ProductBlockEvent> _eventContrl = StreamController();
   final StreamController<ProductBlockState> _stateContrl =

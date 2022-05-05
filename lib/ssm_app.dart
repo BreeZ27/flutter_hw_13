@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     print('build');
-    return Provider<ProductBlock>(
+    return ChangeNotifierProvider<ProductBlock>(
       create: (_) => _prodBlock,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
