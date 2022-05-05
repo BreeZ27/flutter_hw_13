@@ -10,24 +10,6 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class Cart extends ChangeNotifier {
-  List cart = [];
-
-  int get totalPrice {
-    return cart.length * 16;
-  }
-
-  void add(item) {
-    cart.add(item);
-    notifyListeners();
-  }
-
-  void removeAll() {
-    cart.clear();
-    notifyListeners();
-  }
-}
-
 class _MyAppState extends State<MyApp> {
   late final ProductBlock _prodBlock;
 
@@ -41,7 +23,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     print('build');
-    return ChangeNotifierProvider<ProductBlock>(
+    return Provider<ProductBlock>(
       create: (_) => _prodBlock,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

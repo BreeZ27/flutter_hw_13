@@ -8,7 +8,7 @@ import 'package:product_model/model.dart';
 part 'block.freezed.dart';
 
 @injectable
-class ProductBlock extends ChangeNotifier {
+class ProductBlock {
   final ProductService productService;
   final StreamController<ProductBlockEvent> _eventContrl = StreamController();
   final StreamController<ProductBlockState> _stateContrl =
