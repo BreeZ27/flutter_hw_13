@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'package:data/data.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:product_model/model.dart';
 
 part 'block.freezed.dart';
 
@@ -75,9 +73,8 @@ class ProductBlock {
 @freezed
 class ProductBlockState with _$ProductBlockState {
   const factory ProductBlockState.loading() = ProductLoadingState;
-  const factory ProductBlockState.loaded(
-      // {required Iterable<ProductData> prodData}) = ProductLoadedState;
-      {required ProductService prodData}) = ProductLoadedState;
+  const factory ProductBlockState.loaded({required ProductService prodData}) =
+      ProductLoadedState;
 }
 
 @freezed
