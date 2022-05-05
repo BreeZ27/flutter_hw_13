@@ -22,7 +22,7 @@ class _$ProductBlockStateTearOff {
     return const ProductLoadingState();
   }
 
-  ProductLoadedState loaded({required Iterable<ProductData> prodData}) {
+  ProductLoadedState loaded({required ProductService prodData}) {
     return ProductLoadedState(
       prodData: prodData,
     );
@@ -37,19 +37,19 @@ mixin _$ProductBlockState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(Iterable<ProductData> prodData) loaded,
+    required TResult Function(ProductService prodData) loaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(Iterable<ProductData> prodData)? loaded,
+    TResult Function(ProductService prodData)? loaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(Iterable<ProductData> prodData)? loaded,
+    TResult Function(ProductService prodData)? loaded,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -133,7 +133,7 @@ class _$ProductLoadingState implements ProductLoadingState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(Iterable<ProductData> prodData) loaded,
+    required TResult Function(ProductService prodData) loaded,
   }) {
     return loading();
   }
@@ -142,7 +142,7 @@ class _$ProductLoadingState implements ProductLoadingState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(Iterable<ProductData> prodData)? loaded,
+    TResult Function(ProductService prodData)? loaded,
   }) {
     return loading?.call();
   }
@@ -151,7 +151,7 @@ class _$ProductLoadingState implements ProductLoadingState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(Iterable<ProductData> prodData)? loaded,
+    TResult Function(ProductService prodData)? loaded,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -201,7 +201,7 @@ abstract class $ProductLoadedStateCopyWith<$Res> {
   factory $ProductLoadedStateCopyWith(
           ProductLoadedState value, $Res Function(ProductLoadedState) then) =
       _$ProductLoadedStateCopyWithImpl<$Res>;
-  $Res call({Iterable<ProductData> prodData});
+  $Res call({ProductService prodData});
 }
 
 /// @nodoc
@@ -223,7 +223,7 @@ class _$ProductLoadedStateCopyWithImpl<$Res>
       prodData: prodData == freezed
           ? _value.prodData
           : prodData // ignore: cast_nullable_to_non_nullable
-              as Iterable<ProductData>,
+              as ProductService,
     ));
   }
 }
@@ -234,7 +234,7 @@ class _$ProductLoadedState implements ProductLoadedState {
   const _$ProductLoadedState({required this.prodData});
 
   @override
-  final Iterable<ProductData> prodData;
+  final ProductService prodData;
 
   @override
   String toString() {
@@ -262,7 +262,7 @@ class _$ProductLoadedState implements ProductLoadedState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(Iterable<ProductData> prodData) loaded,
+    required TResult Function(ProductService prodData) loaded,
   }) {
     return loaded(prodData);
   }
@@ -271,7 +271,7 @@ class _$ProductLoadedState implements ProductLoadedState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(Iterable<ProductData> prodData)? loaded,
+    TResult Function(ProductService prodData)? loaded,
   }) {
     return loaded?.call(prodData);
   }
@@ -280,7 +280,7 @@ class _$ProductLoadedState implements ProductLoadedState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(Iterable<ProductData> prodData)? loaded,
+    TResult Function(ProductService prodData)? loaded,
     required TResult orElse(),
   }) {
     if (loaded != null) {
@@ -322,10 +322,10 @@ class _$ProductLoadedState implements ProductLoadedState {
 }
 
 abstract class ProductLoadedState implements ProductBlockState {
-  const factory ProductLoadedState({required Iterable<ProductData> prodData}) =
+  const factory ProductLoadedState({required ProductService prodData}) =
       _$ProductLoadedState;
 
-  Iterable<ProductData> get prodData;
+  ProductService get prodData;
   @JsonKey(ignore: true)
   $ProductLoadedStateCopyWith<ProductLoadedState> get copyWith =>
       throw _privateConstructorUsedError;
@@ -337,12 +337,6 @@ class _$ProductBlockEventTearOff {
 
   _ProductInitEvent init() {
     return const _ProductInitEvent();
-  }
-
-  _ProductGetEvent getProd({required int prodId}) {
-    return _ProductGetEvent(
-      prodId: prodId,
-    );
   }
 
   _ProductSetEvent setProd() {
@@ -362,7 +356,6 @@ mixin _$ProductBlockEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
-    required TResult Function(int prodId) getProd,
     required TResult Function() setProd,
     required TResult Function() addProd,
   }) =>
@@ -370,7 +363,6 @@ mixin _$ProductBlockEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? init,
-    TResult Function(int prodId)? getProd,
     TResult Function()? setProd,
     TResult Function()? addProd,
   }) =>
@@ -378,7 +370,6 @@ mixin _$ProductBlockEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
-    TResult Function(int prodId)? getProd,
     TResult Function()? setProd,
     TResult Function()? addProd,
     required TResult orElse(),
@@ -387,7 +378,6 @@ mixin _$ProductBlockEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_ProductInitEvent value) init,
-    required TResult Function(_ProductGetEvent value) getProd,
     required TResult Function(_ProductSetEvent value) setProd,
     required TResult Function(_ProductAddEvent value) addProd,
   }) =>
@@ -395,7 +385,6 @@ mixin _$ProductBlockEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_ProductInitEvent value)? init,
-    TResult Function(_ProductGetEvent value)? getProd,
     TResult Function(_ProductSetEvent value)? setProd,
     TResult Function(_ProductAddEvent value)? addProd,
   }) =>
@@ -403,7 +392,6 @@ mixin _$ProductBlockEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_ProductInitEvent value)? init,
-    TResult Function(_ProductGetEvent value)? getProd,
     TResult Function(_ProductSetEvent value)? setProd,
     TResult Function(_ProductAddEvent value)? addProd,
     required TResult orElse(),
@@ -470,7 +458,6 @@ class _$_ProductInitEvent implements _ProductInitEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
-    required TResult Function(int prodId) getProd,
     required TResult Function() setProd,
     required TResult Function() addProd,
   }) {
@@ -481,7 +468,6 @@ class _$_ProductInitEvent implements _ProductInitEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? init,
-    TResult Function(int prodId)? getProd,
     TResult Function()? setProd,
     TResult Function()? addProd,
   }) {
@@ -492,7 +478,6 @@ class _$_ProductInitEvent implements _ProductInitEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
-    TResult Function(int prodId)? getProd,
     TResult Function()? setProd,
     TResult Function()? addProd,
     required TResult orElse(),
@@ -507,7 +492,6 @@ class _$_ProductInitEvent implements _ProductInitEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_ProductInitEvent value) init,
-    required TResult Function(_ProductGetEvent value) getProd,
     required TResult Function(_ProductSetEvent value) setProd,
     required TResult Function(_ProductAddEvent value) addProd,
   }) {
@@ -518,7 +502,6 @@ class _$_ProductInitEvent implements _ProductInitEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_ProductInitEvent value)? init,
-    TResult Function(_ProductGetEvent value)? getProd,
     TResult Function(_ProductSetEvent value)? setProd,
     TResult Function(_ProductAddEvent value)? addProd,
   }) {
@@ -529,7 +512,6 @@ class _$_ProductInitEvent implements _ProductInitEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_ProductInitEvent value)? init,
-    TResult Function(_ProductGetEvent value)? getProd,
     TResult Function(_ProductSetEvent value)? setProd,
     TResult Function(_ProductAddEvent value)? addProd,
     required TResult orElse(),
@@ -543,152 +525,6 @@ class _$_ProductInitEvent implements _ProductInitEvent {
 
 abstract class _ProductInitEvent implements ProductBlockEvent {
   const factory _ProductInitEvent() = _$_ProductInitEvent;
-}
-
-/// @nodoc
-abstract class _$ProductGetEventCopyWith<$Res> {
-  factory _$ProductGetEventCopyWith(
-          _ProductGetEvent value, $Res Function(_ProductGetEvent) then) =
-      __$ProductGetEventCopyWithImpl<$Res>;
-  $Res call({int prodId});
-}
-
-/// @nodoc
-class __$ProductGetEventCopyWithImpl<$Res>
-    extends _$ProductBlockEventCopyWithImpl<$Res>
-    implements _$ProductGetEventCopyWith<$Res> {
-  __$ProductGetEventCopyWithImpl(
-      _ProductGetEvent _value, $Res Function(_ProductGetEvent) _then)
-      : super(_value, (v) => _then(v as _ProductGetEvent));
-
-  @override
-  _ProductGetEvent get _value => super._value as _ProductGetEvent;
-
-  @override
-  $Res call({
-    Object? prodId = freezed,
-  }) {
-    return _then(_ProductGetEvent(
-      prodId: prodId == freezed
-          ? _value.prodId
-          : prodId // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$_ProductGetEvent implements _ProductGetEvent {
-  const _$_ProductGetEvent({required this.prodId});
-
-  @override
-  final int prodId;
-
-  @override
-  String toString() {
-    return 'ProductBlockEvent.getProd(prodId: $prodId)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _ProductGetEvent &&
-            const DeepCollectionEquality().equals(other.prodId, prodId));
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(prodId));
-
-  @JsonKey(ignore: true)
-  @override
-  _$ProductGetEventCopyWith<_ProductGetEvent> get copyWith =>
-      __$ProductGetEventCopyWithImpl<_ProductGetEvent>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() init,
-    required TResult Function(int prodId) getProd,
-    required TResult Function() setProd,
-    required TResult Function() addProd,
-  }) {
-    return getProd(prodId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? init,
-    TResult Function(int prodId)? getProd,
-    TResult Function()? setProd,
-    TResult Function()? addProd,
-  }) {
-    return getProd?.call(prodId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? init,
-    TResult Function(int prodId)? getProd,
-    TResult Function()? setProd,
-    TResult Function()? addProd,
-    required TResult orElse(),
-  }) {
-    if (getProd != null) {
-      return getProd(prodId);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_ProductInitEvent value) init,
-    required TResult Function(_ProductGetEvent value) getProd,
-    required TResult Function(_ProductSetEvent value) setProd,
-    required TResult Function(_ProductAddEvent value) addProd,
-  }) {
-    return getProd(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_ProductInitEvent value)? init,
-    TResult Function(_ProductGetEvent value)? getProd,
-    TResult Function(_ProductSetEvent value)? setProd,
-    TResult Function(_ProductAddEvent value)? addProd,
-  }) {
-    return getProd?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_ProductInitEvent value)? init,
-    TResult Function(_ProductGetEvent value)? getProd,
-    TResult Function(_ProductSetEvent value)? setProd,
-    TResult Function(_ProductAddEvent value)? addProd,
-    required TResult orElse(),
-  }) {
-    if (getProd != null) {
-      return getProd(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _ProductGetEvent implements ProductBlockEvent {
-  const factory _ProductGetEvent({required int prodId}) = _$_ProductGetEvent;
-
-  int get prodId;
-  @JsonKey(ignore: true)
-  _$ProductGetEventCopyWith<_ProductGetEvent> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -733,7 +569,6 @@ class _$_ProductSetEvent implements _ProductSetEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
-    required TResult Function(int prodId) getProd,
     required TResult Function() setProd,
     required TResult Function() addProd,
   }) {
@@ -744,7 +579,6 @@ class _$_ProductSetEvent implements _ProductSetEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? init,
-    TResult Function(int prodId)? getProd,
     TResult Function()? setProd,
     TResult Function()? addProd,
   }) {
@@ -755,7 +589,6 @@ class _$_ProductSetEvent implements _ProductSetEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
-    TResult Function(int prodId)? getProd,
     TResult Function()? setProd,
     TResult Function()? addProd,
     required TResult orElse(),
@@ -770,7 +603,6 @@ class _$_ProductSetEvent implements _ProductSetEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_ProductInitEvent value) init,
-    required TResult Function(_ProductGetEvent value) getProd,
     required TResult Function(_ProductSetEvent value) setProd,
     required TResult Function(_ProductAddEvent value) addProd,
   }) {
@@ -781,7 +613,6 @@ class _$_ProductSetEvent implements _ProductSetEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_ProductInitEvent value)? init,
-    TResult Function(_ProductGetEvent value)? getProd,
     TResult Function(_ProductSetEvent value)? setProd,
     TResult Function(_ProductAddEvent value)? addProd,
   }) {
@@ -792,7 +623,6 @@ class _$_ProductSetEvent implements _ProductSetEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_ProductInitEvent value)? init,
-    TResult Function(_ProductGetEvent value)? getProd,
     TResult Function(_ProductSetEvent value)? setProd,
     TResult Function(_ProductAddEvent value)? addProd,
     required TResult orElse(),
@@ -850,7 +680,6 @@ class _$_ProductAddEvent implements _ProductAddEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
-    required TResult Function(int prodId) getProd,
     required TResult Function() setProd,
     required TResult Function() addProd,
   }) {
@@ -861,7 +690,6 @@ class _$_ProductAddEvent implements _ProductAddEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? init,
-    TResult Function(int prodId)? getProd,
     TResult Function()? setProd,
     TResult Function()? addProd,
   }) {
@@ -872,7 +700,6 @@ class _$_ProductAddEvent implements _ProductAddEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
-    TResult Function(int prodId)? getProd,
     TResult Function()? setProd,
     TResult Function()? addProd,
     required TResult orElse(),
@@ -887,7 +714,6 @@ class _$_ProductAddEvent implements _ProductAddEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_ProductInitEvent value) init,
-    required TResult Function(_ProductGetEvent value) getProd,
     required TResult Function(_ProductSetEvent value) setProd,
     required TResult Function(_ProductAddEvent value) addProd,
   }) {
@@ -898,7 +724,6 @@ class _$_ProductAddEvent implements _ProductAddEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_ProductInitEvent value)? init,
-    TResult Function(_ProductGetEvent value)? getProd,
     TResult Function(_ProductSetEvent value)? setProd,
     TResult Function(_ProductAddEvent value)? addProd,
   }) {
@@ -909,7 +734,6 @@ class _$_ProductAddEvent implements _ProductAddEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_ProductInitEvent value)? init,
-    TResult Function(_ProductGetEvent value)? getProd,
     TResult Function(_ProductSetEvent value)? setProd,
     TResult Function(_ProductAddEvent value)? addProd,
     required TResult orElse(),

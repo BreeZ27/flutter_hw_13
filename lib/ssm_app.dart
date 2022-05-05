@@ -10,6 +10,24 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
+class Cart extends ChangeNotifier {
+  List cart = [];
+
+  int get totalPrice {
+    return cart.length * 16;
+  }
+
+  void add(item) {
+    cart.add(item);
+    notifyListeners();
+  }
+
+  void removeAll() {
+    cart.clear();
+    notifyListeners();
+  }
+}
+
 class _MyAppState extends State<MyApp> {
   late final ProductBlock _prodBlock;
 
@@ -65,10 +83,11 @@ class _MyHomePageState extends State<MyHomePage> {
         );
   }
 
-  void _boxUpdate(ProductBlockState state, e) {
-    print(context.read<ProductBlock>().boxService.array);
+  void _cartUpdate(ProductBlockState state, item) {
+    context.read<ProductBlock>().productService.myCart.add(item);
+
     return context.read<ProductBlock>().add(
-          ProductBlockEvent.addProd(),
+          const ProductBlockEvent.addProd(),
         );
   }
 
@@ -112,15 +131,19 @@ class _MyHomePageState extends State<MyHomePage> {
                                   style: Theme.of(context).textTheme.headline6,
                                 ),
                               ),
-                              ...state.prodData.map((e) => ListTile(
-                                    title: Text('Товар ${e.id.toString()}'),
-                                    trailing: const Icon(Icons.add_box),
-                                    onTap: () {
-                                      _boxUpdate(state, e);
-                                      // e.id;
-                                    },
-                                  )),
-                              // read != null ? Text(read) : Text('None')
+                              ...state.prodData.array.values.map(
+                                (e) => ListTile(
+                                  title: Text('Товар ${e.id.toString()}'),
+                                  trailing: const Icon(Icons.add_box),
+                                  onTap: () {
+                                    _cartUpdate(state, e);
+                                    // state.prodData.createProducts(5);
+                                    // state.prodData.myCart.add(e);
+                                    // state.prodData.give();
+                                    // Cart().add(e);
+                                  },
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -143,17 +166,13 @@ class _MyHomePageState extends State<MyHomePage> {
                           SingleChildScrollView(
                             child: Column(
                               children: [
-                                ...context
-                                    .read<ProductBlock>()
-                                    .boxService
-                                    .array
-                                    .map(
-                                      (e) => ListTile(
-                                        title: Text(
-                                          e.id.toString(),
-                                        ),
-                                      ),
-                                    )
+                                ...state.prodData.out.keys.map(
+                                  (e) => ListTile(
+                                    title: Text('Товар ${e.id}'),
+                                    trailing:
+                                        Text('x ${state.prodData.out[e]}'),
+                                  ),
+                                ),
                               ],
                             ),
                           )

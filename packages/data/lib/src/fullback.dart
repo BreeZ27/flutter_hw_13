@@ -13,9 +13,11 @@ class MyProductService implements ProductService {
   Future<Map<int, ProductData>> createProducts(int number) async {
     await Future.delayed(const Duration(milliseconds: 100));
 
-    for (var i = 0; i < number; i++) {
+    for (var i = index; i < index + number; i++) {
+      print('DATA: Product with index $i created');
       array[i] = ProductData(id: i);
     }
+    index += number;
     return array;
   }
 
@@ -31,30 +33,25 @@ class MyProductService implements ProductService {
     return _new;
   }
 
-  @override
-  ProductData getProductById(int id) {
-    var _prod = array[id];
-    return _prod!;
+  Future<Map<ProductData, int>> give() async {
+    Map<ProductData, int> _answer = {};
+
+    await Future.delayed(const Duration(seconds: 1));
+
+    for (var item in myCart) {
+      if (_answer.keys.contains(item) == false) {
+        _answer[item] = 1;
+      } else {
+        _answer[item] = _answer[item]! + 1;
+      }
+    }
+
+    return out = _answer;
   }
 
   @override
-  String productsShow() {
-    return array.toString();
-  }
-
-  Iterable<ProductData> give() {
-    return array.values;
-  }
-}
-
-@LazySingleton(as: BoxService)
-class MyBoxService implements BoxService {
-  @override
-  List<ProductData> array = [];
+  Map<ProductData, int> out = {};
 
   @override
-  void addProduct(ProductData elmt) {
-    var item = MyProductService().array[elmt];
-    array.add(item!);
-  }
+  List<ProductData> myCart = [];
 }
