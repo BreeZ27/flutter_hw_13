@@ -17,20 +17,18 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _prodBlock = GetIt.I.get<ProductBlock>();
+    // _prodBlock.productService.createProducts(5);
   }
 
   @override
   Widget build(BuildContext context) {
     print('build');
-    return ChangeNotifierProvider<ProductBlock>(
-      create: (_) => _prodBlock,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter_hw_13',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: const MyHomePage(
         title: 'Flutter_hw_13',
-        theme: ThemeData(primarySwatch: Colors.blue),
-        home: const MyHomePage(
-          title: 'Flutter_hw_13',
-        ),
       ),
     );
   }
@@ -42,25 +40,33 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends ConsumerWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
+  static int starter = 0;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final store = ref.watch(productBlockProvider);
+    final provider = ref.watch(productBlockProvider.notifier);
 
-class _MyHomePageState extends State<MyHomePage> {
-  void _cartUpdate(item) {
-    context.read<ProductBlock>().addToCart(item);
-  }
+    void _start() {
+      if (starter == 0) {
+        provider.create(5);
+        starter += 1;
+      }
+    }
 
-  void _cartCleaner() {
-    context.read<ProductBlock>().cleane();
-  }
+    void _cartUpdate(item) {
+      provider.addToCart(item);
+    }
 
-  @override
-  Widget build(BuildContext context) {
+    void _cartCleaner() {
+      provider.cleane();
+    }
+
+    _start();
+
     return Scaffold(
       appBar: AppBar(),
       body: Container(
@@ -78,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         style: Theme.of(context).textTheme.headline6,
                       ),
                     ),
-                    ...context.watch<ProductBlock>().goods().map(
+                    ...provider.goods().map(
                           (e) => ListTile(
                             title: Text(
                               'Товар ${e.id}',
@@ -86,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             trailing: const Icon(Icons.add_box),
                             onTap: () => _cartUpdate(e),
                           ),
-                        )
+                        ),
                   ],
                 ),
               ),
@@ -104,13 +110,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   SingleChildScrollView(
                     child: Column(
                       children: [
-                        ...context.watch<ProductBlock>().show().keys.map(
+                        ...provider.show().keys.map(
                               (e) => ListTile(
-                                title: Text(
-                                  'Товар ${e.id}',
-                                ),
-                                trailing: Text(
-                                    'x ${context.watch<ProductBlock>().show()[e]}'),
+                                title: Text('Товар ${e.id}'),
+                                trailing: Text('x ${provider.show()[e]}'),
                               ),
                             ),
                       ],
@@ -122,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                'К оплате: ${context.watch<ProductBlock>().sum()} у.е.',
+                'К оплате: ${provider.sum()} у.е.',
                 style: Theme.of(context).textTheme.headline6,
               ),
             ),

@@ -8,4 +8,7 @@ abstract class ProductService {
   List<ProductData> myCart = [];
   Map<ProductData, int> out = {};
   void cleane();
+  void addToCart(ProductData item);
+  show();
+  store();
 }

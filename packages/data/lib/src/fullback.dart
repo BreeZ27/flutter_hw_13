@@ -57,6 +57,21 @@ class MyProductService implements ProductService {
   }
 
   @override
+  void addToCart(ProductData item) {
+    myCart.add(item);
+  }
+
+  @override
+  store() {
+    return array.values;
+  }
+
+  @override
+  show() {
+    return out;
+  }
+
+  @override
   Map<ProductData, int> out = {};
 
   @override
