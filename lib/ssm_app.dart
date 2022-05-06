@@ -51,8 +51,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String toShow = 'No data';
-
   void _cartUpdate(item) {
     context.read<ProductBlock>().addToCart(item);
   }
@@ -66,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(),
       body: Container(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         child: Column(
           children: [
             Expanded(
@@ -122,11 +120,12 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Container(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'К оплате: ${context.watch<ProductBlock>().sum()} у.е.',
-                  style: Theme.of(context).textTheme.headline6,
-                ))
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'К оплате: ${context.watch<ProductBlock>().sum()} у.е.',
+                style: Theme.of(context).textTheme.headline6,
+              ),
+            ),
           ],
         ),
       ),
