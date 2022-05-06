@@ -1,16 +1,12 @@
-import 'dart:async';
 import 'package:data/data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:product_model/model.dart';
-import 'package:get_it/get_it.dart';
 
 @injectable
 class ProductBlock extends ChangeNotifier {
-  final ProductService productService = MyProductService();
+  final ProductService productService;
 
-  ProductBlock() {
+  ProductBlock({required this.productService}) {
     productService.createProducts(5);
   }
 
@@ -31,5 +27,14 @@ class ProductBlock extends ChangeNotifier {
 
   show() {
     return productService.out;
+  }
+
+  sum() {
+    var res = 0;
+    for (var item in productService.out.values) {
+      res += item;
+    }
+    res *= 48;
+    return res;
   }
 }
