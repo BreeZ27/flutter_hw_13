@@ -1,14 +1,18 @@
 import 'dart:async';
 import 'package:data/data.dart';
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final productBlockProvider =
-    StateNotifierProvider<ProductBlock, ProductService>((ref) {
-  return ProductBlock();
-});
+// final productBlockProvider =
+//     StateNotifierProvider<ProductBlock, ProductService>((ref) {
+//   return ProductBlock();
+// });
 
-class ProductBlockNotifier extends StateNotifier<ProductBlock>
+// @injectable
+// class ProductBlockNotifier extends StateNotifier<ProductBlock>{
+//   ProductBlockNotifier() : super(ProductBlock());
+// }
 
 @injectable
 class ProductBlock {
