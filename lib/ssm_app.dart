@@ -3,22 +3,16 @@ import 'package:buisness/buisness.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
+  // @override
+  // void initState() {
+  // super.initState();
+  // _prodBlock = GetIt.I.get<ProductBlock>();
 
-class _MyAppState extends State<MyApp> {
-  late final ProductBlock _prodBlock;
-
-  @override
-  void initState() {
-    super.initState();
-    _prodBlock = GetIt.I.get<ProductBlock>();
-    // _prodBlock.productService.createProducts(5);
-  }
+  // _prodBlock.productService.createProducts(5);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +27,11 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  @override
-  void dispose() {
-    _prodBlock.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _prodBlock.dispose();
+  //   super.dispose();
+  // }
 }
 
 class MyHomePage extends ConsumerWidget {
@@ -49,7 +43,7 @@ class MyHomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.watch(productBlockProvider);
     final provider = ref.watch(productBlockProvider.notifier);
-
+    print('productBlockProvider ${ref}');
     void _start() {
       if (starter == 0) {
         provider.create(5);
@@ -90,7 +84,7 @@ class MyHomePage extends ConsumerWidget {
                               'Товар ${e.id}',
                             ),
                             trailing: const Icon(Icons.add_box),
-                            onTap: () => _cartUpdate(e),
+                            onTap: () => provider.addToCart(e),
                           ),
                         ),
                   ],
