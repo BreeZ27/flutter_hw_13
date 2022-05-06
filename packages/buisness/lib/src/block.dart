@@ -8,29 +8,35 @@ final productBlockProvider =
   return ProductBlock();
 });
 
+class ProductBlockNotifier extends StateNotifier<ProductBlock>
+
 @injectable
-class ProductBlock extends StateNotifier<ProductService> {
-  ProductBlock() : super(MyProductService());
+class ProductBlock {
+  final ProductService productService;
+
+  ProductBlock({required this.productService}) {
+    productService.createProducts(5);
+  }
 
   void addToCart(item) async {
-    state.addToCart(item);
-    state.give();
+    productService.addToCart(item);
+    productService.give();
     print("BLOCK ADD");
   }
 
-  void cleane() => state.cleane();
+  void cleane() => productService.cleane();
 
   void create(i) async {
-    await state.createProducts(5);
+    await productService.createProducts(5);
   }
 
-  goods() => state.store();
+  goods() => productService.store();
 
-  show() => state.show();
+  show() => productService.show();
 
   sum() {
     var _res = 0;
-    for (var item in state.out.values) {
+    for (var item in productService.out.values) {
       _res += item;
     }
     _res *= 48;
