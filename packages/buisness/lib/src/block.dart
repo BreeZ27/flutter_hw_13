@@ -1,14 +1,13 @@
 import 'dart:async';
 import 'package:data/data.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:product_model/model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 part 'block.freezed.dart';
 
 @injectable
-class ProductBlock extends ChangeNotifier {
+class ProductBlock extends StateNotifier {
   final ProductService productService;
   final StreamController<ProductBlockEvent> _eventContrl = StreamController();
   final StreamController<ProductBlockState> _stateContrl =
