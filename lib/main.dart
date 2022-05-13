@@ -6,5 +6,5 @@ import 'ssm_app.dart';
 void main() {
   initializeBlocs();
   // runApp(MobXApp());
-  runApp(ProviderScope(child: MyApp()));
+  runApp(MyApp());
 }

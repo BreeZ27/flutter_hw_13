@@ -28,6 +28,7 @@ dependencies:
   freezed: ^1.1.1
   injectable: ^1.5.3
   flutter_riverpod: ^1.0.3
+  hooks_riverpod: ^1.0.4
   data:
     path: ../data
 

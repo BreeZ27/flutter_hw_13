@@ -4,18 +4,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 GetIt getIt = GetIt.instance;
 
+// final productBlockProvider = Provider<ProductBlock>((ref) {
+//   return ProductBlock(productService: getIt.get<ProductService>());
+// });
+
 final productBlockProvider =
     StateNotifierProvider<ProductBlockNotifier, ProductBlock>((ref) {
-  return ProductBlockNotifier();
+  return ProductBlockNotifier(ref);
 });
 
 // @injectable
 class ProductBlockNotifier extends StateNotifier<ProductBlock> {
-  ProductBlockNotifier()
+  ProductBlockNotifier(this.ref)
       : super(ProductBlock(productService: getIt.get<ProductService>()));
+
+  final Ref ref;
 
   void addProd(item) {
     state.addToCart(item);

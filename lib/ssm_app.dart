@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:buisness/buisness.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -17,12 +18,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('build');
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter_hw_13',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const MyHomePage(
+    return ProviderScope(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter_hw_13',
+        theme: ThemeData(primarySwatch: Colors.blue),
+        home: const MyHomePage(
+          title: 'Flutter_hw_13',
+        ),
       ),
     );
   }
@@ -42,29 +45,16 @@ class MyHomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.watch(productBlockProvider);
-    final provider = ref.read(productBlockProvider.notifier);
-
-    // final provider = ref.watch(productBlockProvider);
-    print('productBlockProvider ${ref}');
-    void _start() {
-      if (starter == 0) {
-        // provider.create(5);
-        starter += 1;
-      }
-    }
+    final provider = ref.watch(productBlockProvider.notifier);
 
     void _cartUpdate(item) {
-      // provider.addToCart(item);
       provider.addProd(item);
-      // store.addToCart(item);
+      store.addToCart(item);
     }
 
     void _cartCleaner() {
-      // provider.cleane();
       provider.cleaning();
     }
-
-    _start();
 
     return Scaffold(
       appBar: AppBar(),
@@ -83,17 +73,14 @@ class MyHomePage extends ConsumerWidget {
                         style: Theme.of(context).textTheme.headline6,
                       ),
                     ),
-                    // ...provider.giveGoods().map(
-                    ...store.goods().map(
+                    // ...store.goods().map(
+                    ...provider.giveGoods().map(
                           (e) => ListTile(
                             title: Text(
                               'Товар ${e.id}',
                             ),
                             trailing: const Icon(Icons.add_box),
-                            onTap: () {
-                              provider.addProd(e);
-                            },
-                            // onTap: () => _cartUpdate(e),
+                            onTap: () => _cartUpdate(e),
                           ),
                         ),
                   ],
@@ -113,10 +100,14 @@ class MyHomePage extends ConsumerWidget {
                   SingleChildScrollView(
                     child: Column(
                       children: [
-                        ...store.show().keys.map(
+                        ...provider.giveShow().keys.map(
                               (e) => ListTile(
-                                title: Text('Товар ${e.id}'),
-                                trailing: Text('x ${store.show()[e]}'),
+                                title: Text(
+                                  'Товар ${e.id}',
+                                ),
+                                trailing: Text(
+                                  'x ${provider.giveShow()[e]}',
+                                ),
                               ),
                             ),
                       ],
@@ -128,7 +119,7 @@ class MyHomePage extends ConsumerWidget {
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                'К оплате: ${store.sum()} у.е.',
+                'К оплате: ${provider.giveSum()} у.е.',
                 style: Theme.of(context).textTheme.headline6,
               ),
             ),
