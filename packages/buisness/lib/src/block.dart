@@ -1,44 +1,34 @@
 import 'dart:async';
 import 'package:data/data.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:product_model/model.dart';
 
-part 'block.freezed.dart';
+GetIt getIt = GetIt.instance;
+
+enum ProductBlockEvent { clear, add }
 
 @injectable
-class ProductBlock extends ChangeNotifier {
-  final ProductService productService;
-  final StreamController<ProductBlockEvent> _eventContrl = StreamController();
-  final StreamController<ProductBlockState> _stateContrl =
-      StreamController.broadcast();
+class ProductBlock {
+  late final ProductService productService;
+  final _stateContrl = StreamController<ProductBlock>();
+  final _eventContrl = StreamController<ProductBlockEvent>();
 
-  Stream<ProductBlockState> get state => _stateContrl.stream;
+  Stream<ProductBlock> get state => _stateContrl.stream;
 
-  ProductBlock({required this.productService}) {
-    _eventContrl.stream.listen((event) {
-      event.map<void>(init: (_) async {
-        _stateContrl.add(const ProductBlockState.loading());
-        await productService.createProducts(5);
-        _stateContrl.add(
-          ProductBlockState.loaded(prodData: productService),
-        );
-      }, setProd: (event) async {
-        await productService.createOne();
-        return _stateContrl.add(
-          ProductBlockState.loaded(prodData: productService),
-        );
-      }, addProd: (event) async {
-        await productService.give();
-        return _stateContrl
-            .add(ProductBlockState.loaded(prodData: productService));
-      }, cleanProd: (event) {
-        productService.cleane();
-        return _stateContrl
-            .add(ProductBlockState.loaded(prodData: productService));
-      });
-    });
+  Sink<ProductBlockEvent> get action => _eventContrl.sink;
+
+  ProductBlock() {
+    productService = getIt.get<ProductService>();
+    _eventContrl.stream.listen((_handleEvent));
+  }
+
+  void _handleEvent(ProductBlockEvent action) async {
+    if (action == ProductBlockEvent.clear) {
+      productService.cleane();
+    }
+    // _stateContrl.add(event)
   }
 
   void addToCart(item) {
@@ -59,10 +49,6 @@ class ProductBlock extends ChangeNotifier {
     productService.give();
   }
 
-  void cleane() {
-    productService.cleane();
-  }
-
   goods() {
     return productService.array.values;
   }
@@ -70,20 +56,4 @@ class ProductBlock extends ChangeNotifier {
   show() {
     return productService.out;
   }
-}
-
-@freezed
-class ProductBlockState with _$ProductBlockState {
-  const factory ProductBlockState.loading() = ProductLoadingState;
-  const factory ProductBlockState.loaded(
-      // {required Iterable<ProductData> prodData}) = ProductLoadedState;
-      {required ProductService prodData}) = ProductLoadedState;
-}
-
-@freezed
-class ProductBlockEvent with _$ProductBlockEvent {
-  const factory ProductBlockEvent.init() = _ProductInitEvent;
-  const factory ProductBlockEvent.setProd() = _ProductSetEvent;
-  const factory ProductBlockEvent.addProd() = _ProductAddEvent;
-  const factory ProductBlockEvent.cleanProd() = _ProductCleanEvent;
 }
