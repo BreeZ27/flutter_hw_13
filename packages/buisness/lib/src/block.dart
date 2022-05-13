@@ -11,16 +11,15 @@ enum ProductBlockEvent { clear, add }
 
 @injectable
 class ProductBlock {
-  late final ProductService productService;
+  final ProductService productService = getIt.get<ProductService>();
   final _stateContrl = StreamController<ProductBlock>();
   final _eventContrl = StreamController<ProductBlockEvent>();
 
   Stream<ProductBlock> get state => _stateContrl.stream;
-
   Sink<ProductBlockEvent> get action => _eventContrl.sink;
 
   ProductBlock() {
-    productService = getIt.get<ProductService>();
+    // productService = ;
     _eventContrl.stream.listen((_handleEvent));
   }
 
@@ -35,10 +34,10 @@ class ProductBlock {
     productService.myCart.add(item);
   }
 
-  void add(ProductBlockEvent event) {
-    if (_eventContrl.isClosed) return;
-    _eventContrl.add(event);
-  }
+  // void add(ProductBlockEvent event) {
+  //   if (_eventContrl.isClosed) return;
+  //   _eventContrl.add(event);
+  // }
 
   void dispose() {
     _eventContrl.close();

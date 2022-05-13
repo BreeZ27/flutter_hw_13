@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:get_it/get_it.dart';
 
 void main() {
+  // getIt.registerLazySingleton<ProductBlock>((_) => ProductBlock());
   runApp(MyApp());
 }
 
@@ -37,22 +38,16 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   late final _prodBlock;
 
-  final loading = const Scaffold(
-    body: Center(
-      child: CircularProgressIndicator(),
-    ),
-  );
+  @override
+  void initState() {
+    _prodBlock = ProductBlock();
+    super.initState();
+  }
 
   @override
   void dispose() {
     _prodBlock.dispose();
     super.dispose();
-  }
-
-  @override
-  void initState() {
-    _prodBlock = ProductBlock();
-    super.initState();
   }
 
   @override
@@ -76,6 +71,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         style: Theme.of(context).textTheme.headline6,
                       ),
                     ),
+                    StreamBuilder(
+                        stream: _prodBlock.state,
+                        builder: (_, snapshot) {
+                          if (snapshot.hasData) {
+                            return Text('data');
+                          } else {
+                            return Text('no data');
+                          }
+                        })
 
                     // ...state.prodData.array.values.map(
                     //   (e) => ListTile(
