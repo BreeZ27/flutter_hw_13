@@ -42,21 +42,26 @@ class MyHomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.watch(productBlockProvider);
-    final provider = ref.watch(productBlockProvider.notifier);
+    final provider = ref.read(productBlockProvider.notifier);
+
+    // final provider = ref.watch(productBlockProvider);
     print('productBlockProvider ${ref}');
     void _start() {
       if (starter == 0) {
-        provider.create(5);
+        // provider.create(5);
         starter += 1;
       }
     }
 
     void _cartUpdate(item) {
-      provider.addToCart(item);
+      // provider.addToCart(item);
+      provider.addProd(item);
+      // store.addToCart(item);
     }
 
     void _cartCleaner() {
-      provider.cleane();
+      // provider.cleane();
+      provider.cleaning();
     }
 
     _start();
@@ -78,13 +83,17 @@ class MyHomePage extends ConsumerWidget {
                         style: Theme.of(context).textTheme.headline6,
                       ),
                     ),
-                    ...provider.goods().map(
+                    // ...provider.giveGoods().map(
+                    ...store.goods().map(
                           (e) => ListTile(
                             title: Text(
                               'Товар ${e.id}',
                             ),
                             trailing: const Icon(Icons.add_box),
-                            onTap: () => provider.addToCart(e),
+                            onTap: () {
+                              provider.addProd(e);
+                            },
+                            // onTap: () => _cartUpdate(e),
                           ),
                         ),
                   ],
@@ -104,10 +113,10 @@ class MyHomePage extends ConsumerWidget {
                   SingleChildScrollView(
                     child: Column(
                       children: [
-                        ...provider.show().keys.map(
+                        ...store.show().keys.map(
                               (e) => ListTile(
                                 title: Text('Товар ${e.id}'),
-                                trailing: Text('x ${provider.show()[e]}'),
+                                trailing: Text('x ${store.show()[e]}'),
                               ),
                             ),
                       ],
@@ -119,7 +128,7 @@ class MyHomePage extends ConsumerWidget {
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                'К оплате: ${provider.sum()} у.е.',
+                'К оплате: ${store.sum()} у.е.',
                 style: Theme.of(context).textTheme.headline6,
               ),
             ),

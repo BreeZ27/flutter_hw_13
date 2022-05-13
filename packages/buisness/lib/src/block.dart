@@ -1,28 +1,50 @@
 import 'dart:async';
 import 'package:data/data.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// final productBlockProvider =
-//     StateNotifierProvider<ProductBlock, ProductService>((ref) {
-//   return ProductBlock();
-// });
+GetIt getIt = GetIt.instance;
+
+final productBlockProvider =
+    StateNotifierProvider<ProductBlockNotifier, ProductBlock>((ref) {
+  return ProductBlockNotifier();
+});
 
 // @injectable
-// class ProductBlockNotifier extends StateNotifier<ProductBlock>{
-//   ProductBlockNotifier() : super(ProductBlock());
-// }
+class ProductBlockNotifier extends StateNotifier<ProductBlock> {
+  ProductBlockNotifier()
+      : super(ProductBlock(productService: getIt.get<ProductService>()));
 
-@injectable
-class ProductBlock {
-  final ProductService productService;
-
-  ProductBlock({required this.productService}) {
-    productService.createProducts(5);
+  void addProd(item) {
+    state.addToCart(item);
+    // state.productService.myCart = [...state.productService.myCart, item];
   }
 
-  void addToCart(item) async {
+  void cleaning() => state.cleane();
+  giveGoods() => state.goods();
+  giveShow() => state.show();
+  giveSum() => state.sum();
+}
+
+// @injectable
+// class ProductBlock extends StateNotifier<ProductBlock> {
+//   final ProductService productService = getIt.get<ProductService>();
+
+// ProductBlock() :super()
+// @immutable
+@injectable
+class ProductBlock {
+  static int index = 0;
+  final ProductService productService;
+  ProductBlock({required this.productService}) {
+    productService.createProducts(5);
+    index++;
+    print('index $index');
+  }
+
+  addToCart(item) {
     productService.addToCart(item);
     productService.give();
     print("BLOCK ADD");
