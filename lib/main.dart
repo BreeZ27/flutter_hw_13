@@ -11,7 +11,7 @@ void main() {
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
-  final ProductBlock _prodBlock = ProductBlock();
+  final ProductBlock _prodBlock = GetIt.I.get<ProductBlock>();
 
   @override
   Widget build(BuildContext context) {
