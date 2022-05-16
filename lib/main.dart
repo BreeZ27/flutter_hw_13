@@ -42,10 +42,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    // _prodBlock = GetIt.I.get<ProductBlock>();
     _prodBlock = MyBLoc();
     _prodBlock.action.add(ProductBlockEvent.add);
-    // _prodBlock.addAction
     super.initState();
   }
 
@@ -94,7 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                       onPressed: () {
                                         _prodBlock.addAction.add(e);
                                         print('Товар $e добавлен в поток');
-                                        // _prodBlock.addProduct(e);
                                       },
                                       icon: Icon(Icons.add_box_outlined)),
                                 ),
