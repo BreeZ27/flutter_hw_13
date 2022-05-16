@@ -12,31 +12,13 @@ enum ProductBlockEvent { clear, add, toCart }
 class MyBLoc {
   final ProductBlock productBlock = ProductBlock();
 
-  final _stateContrl = StreamController<ProductBlock>();
-  final _eventContrl = StreamController<ProductBlockEvent>();
-
-  final _cartContrl = StreamController<ProductData>();
-
   final _stateContrl1 = StreamController<Map<ProductData, int>>();
   final _stateContrl2 = StreamController<Map<ProductData, int>>();
-
-  Stream<ProductBlock> get state => _stateContrl.stream;
 
   Stream<Map<ProductData, int>> get cartState => _stateContrl1.stream;
   Stream<Map<ProductData, int>> get goodsState => _stateContrl2.stream;
 
-  Sink<ProductBlockEvent> get action => _eventContrl.sink;
-  Sink<ProductData> get addAction => _cartContrl.sink;
-
-  MyBLoc() {
-    _eventContrl.stream.listen(_handleEvent);
-    _cartContrl.stream.listen((item) {
-      _addProduct(item);
-    });
-    // _handleEvent(ProductBlockEvent.add);
-  }
-
-  void _handleEvent(ProductBlockEvent action) async {
+  void handleEvent(ProductBlockEvent action) async {
     switch (action) {
       case ProductBlockEvent.clear:
         productBlock.cleaning();
@@ -56,7 +38,7 @@ class MyBLoc {
     _stateContrl1.add(productBlock.show());
   }
 
-  void _addProduct(ProductData item) async {
+  void addProduct(ProductData item) async {
     print('MyBLoc._addProduct($item)');
     productBlock.addToCart(item);
     await productBlock.give();
@@ -64,8 +46,8 @@ class MyBLoc {
   }
 
   void dispose() {
-    _eventContrl.close();
-    _stateContrl.close();
+    _stateContrl1.close();
+    _stateContrl2.close();
   }
 }
 
