@@ -7,14 +7,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // @override
-  // void initState() {
-  // super.initState();
-  // _prodBlock = GetIt.I.get<ProductBlock>();
-
-  // _prodBlock.productService.createProducts(5);
-  // }
-
   @override
   Widget build(BuildContext context) {
     print('build');
@@ -29,12 +21,6 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-
-  // @override
-  // void dispose() {
-  //   _prodBlock.dispose();
-  //   super.dispose();
-  // }
 }
 
 class MyHomePage extends ConsumerWidget {
@@ -73,16 +59,17 @@ class MyHomePage extends ConsumerWidget {
                         style: Theme.of(context).textTheme.headline6,
                       ),
                     ),
-                    // ...store.goods().map(
-                    ...provider.giveGoods().map(
-                          (e) => ListTile(
-                            title: Text(
-                              'Товар ${e.id}',
-                            ),
-                            trailing: const Icon(Icons.add_box),
-                            onTap: () => _cartUpdate(e),
+                    ...provider.giveGoods().keys.map(
+                      (e) {
+                        return ListTile(
+                          title: Text(
+                            'Товар ${e.id}',
                           ),
-                        ),
+                          trailing: const Icon(Icons.add_box),
+                          onTap: () => _cartUpdate(e),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),

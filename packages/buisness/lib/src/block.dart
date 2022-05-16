@@ -52,7 +52,7 @@ class ProductBlock {
   }
 
   addToCart(item) {
-    productService.addToCart(item);
+    productService.myCart.add(item);
     productService.give();
     print("BLOCK ADD");
   }
@@ -63,9 +63,11 @@ class ProductBlock {
     await productService.createProducts(5);
   }
 
-  goods() => productService.store();
+  goods() {
+    return productService.array;
+  }
 
-  show() => productService.show();
+  show() => productService.out;
 
   sum() {
     var _res = 0;
