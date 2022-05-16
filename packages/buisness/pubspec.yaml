@@ -25,8 +25,8 @@ dependencies:
   flutter:
     sdk: flutter
   get_it: ^7.2.0
-  freezed: ^1.1.1
   injectable: ^1.5.3
+  flutter_bloc: ^8.0.1
   data:
     path: ../data
 

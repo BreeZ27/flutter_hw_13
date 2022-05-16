@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:data/data.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:product_model/model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 GetIt getIt = GetIt.instance;
 
@@ -66,6 +66,8 @@ class MyBLoc {
   void dispose() {
     _eventContrl.close();
     _stateContrl.close();
+    _stateContrl1.close();
+    _stateContrl2.close();
   }
 }
 
