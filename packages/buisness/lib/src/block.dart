@@ -25,7 +25,6 @@ class ProductBlock extends ChangeNotifier {
           ProductBlockState.loaded(prodData: productService),
         );
       }, setProd: (event) async {
-        await productService.createOne();
         return _stateContrl.add(
           ProductBlockState.loaded(prodData: productService),
         );
@@ -34,7 +33,7 @@ class ProductBlock extends ChangeNotifier {
         return _stateContrl
             .add(ProductBlockState.loaded(prodData: productService));
       }, cleanProd: (event) {
-        productService.cleane();
+        cleane();
         return _stateContrl
             .add(ProductBlockState.loaded(prodData: productService));
       });
@@ -60,7 +59,8 @@ class ProductBlock extends ChangeNotifier {
   }
 
   void cleane() {
-    productService.cleane();
+    productService.myCart.clear();
+    productService.out.clear();
   }
 
   goods() {

@@ -32,13 +32,6 @@ class _MyAppState extends State<MyApp> {
   late final ProductBlock _prodBlock;
 
   @override
-  void initState() {
-    super.initState();
-    _prodBlock = GetIt.I.get<ProductBlock>();
-    _prodBlock.add(const ProductBlockEvent.init());
-  }
-
-  @override
   Widget build(BuildContext context) {
     print('build');
     return ChangeNotifierProvider<ProductBlock>(
@@ -52,12 +45,6 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _prodBlock.dispose();
-    super.dispose();
   }
 }
 
@@ -102,7 +89,19 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _prodBlock = GetIt.I.get<ProductBlock>();
+    _prodBlock.add(const ProductBlockEvent.init());
+  }
+
+  @override
   Widget build(BuildContext context) {
+    @override
+    void dispose() {
+      _prodBlock.dispose();
+      super.dispose();
+    }
     // var read = context.read<ProductBlock>().show();
 
     return StreamBuilder<ProductBlockState>(
