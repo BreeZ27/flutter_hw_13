@@ -79,7 +79,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     ...context.watch<ProductBlock>().goods().keys.map((e) {
-                      print(e);
                       return ListTile(
                         title: Text('Товар ${e.id}'),
                         trailing: IconButton(
@@ -87,14 +86,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             icon: Icon(Icons.add_box_outlined)),
                       );
                     })
-                    // (e) => ListTile(
-                    // title: Text('Text'
-                    // 'Товар ${e.id}',
-                    // ),
-                    // trailing: const Icon(Icons.add_box),
-                    // onTap: () => _cartUpdate(e),
-                    // ),
-                    // )
                   ],
                 ),
               ),
