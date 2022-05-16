@@ -7,30 +7,18 @@ class MyProductService implements ProductService {
   static int index = 0;
 
   @override
-  Map<int, ProductData> array = {};
+  Map<ProductData, int> array = {};
 
   @override
-  Future<Map<int, ProductData>> createProducts(int number) async {
+  Future<Map<ProductData, int>> createProducts(int number) async {
     await Future.delayed(const Duration(milliseconds: 100));
 
     for (var i = index; i < index + number; i++) {
       print('DATA: Product with index $i created');
-      array[i] = ProductData(id: i);
+      array[ProductData(id: i)] = i;
     }
     index += number;
     return array;
-  }
-
-  @override
-  Future<ProductData> createOne() async {
-    await Future.delayed(const Duration(seconds: 1));
-
-    var _new = ProductData(id: index);
-
-    array[index] = _new;
-    index++;
-
-    return _new;
   }
 
   @override
@@ -46,9 +34,8 @@ class MyProductService implements ProductService {
         _answer[item] = _answer[item]! + 1;
       }
     }
-    print('DATA: give works');
-    out = _answer;
-    return out;
+
+    return out = _answer;
   }
 
   @override

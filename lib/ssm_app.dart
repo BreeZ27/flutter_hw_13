@@ -78,15 +78,23 @@ class _MyHomePageState extends State<MyHomePage> {
                         style: Theme.of(context).textTheme.headline6,
                       ),
                     ),
-                    ...context.watch<ProductBlock>().goods().map(
-                          (e) => ListTile(
-                            title: Text(
-                              'Товар ${e.id}',
-                            ),
-                            trailing: const Icon(Icons.add_box),
-                            onTap: () => _cartUpdate(e),
-                          ),
-                        )
+                    ...context.watch<ProductBlock>().goods().keys.map((e) {
+                      print(e);
+                      return ListTile(
+                        title: Text('Товар ${e.id}'),
+                        trailing: IconButton(
+                            onPressed: () => _cartUpdate(e),
+                            icon: Icon(Icons.add_box_outlined)),
+                      );
+                    })
+                    // (e) => ListTile(
+                    // title: Text('Text'
+                    // 'Товар ${e.id}',
+                    // ),
+                    // trailing: const Icon(Icons.add_box),
+                    // onTap: () => _cartUpdate(e),
+                    // ),
+                    // )
                   ],
                 ),
               ),

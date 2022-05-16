@@ -1,12 +1,16 @@
 import 'package:data/data.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+
+GetIt getIt = GetIt.instance;
 
 @injectable
 class ProductBlock extends ChangeNotifier {
-  final ProductService productService;
+  late final ProductService productService;
 
-  ProductBlock({required this.productService}) {
+  ProductBlock() {
+    productService = getIt.get<ProductService>();
     productService.createProducts(5);
   }
 
@@ -22,7 +26,7 @@ class ProductBlock extends ChangeNotifier {
   }
 
   goods() {
-    return productService.array.values;
+    return productService.array;
   }
 
   show() {
