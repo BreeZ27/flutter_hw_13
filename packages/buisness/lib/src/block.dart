@@ -1,89 +1,106 @@
 import 'dart:async';
 import 'package:data/data.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:product_model/model.dart';
 
-part 'block.freezed.dart';
+GetIt getIt = GetIt.instance;
 
-@injectable
-class ProductBlock extends ChangeNotifier {
-  final ProductService productService;
-  final StreamController<ProductBlockEvent> _eventContrl = StreamController();
-  final StreamController<ProductBlockState> _stateContrl =
-      StreamController.broadcast();
+enum ProductBlockEvent { clear, add, toCart }
 
-  Stream<ProductBlockState> get state => _stateContrl.stream;
+class MyBLoc {
+  final ProductBlock productBlock = ProductBlock();
 
-  ProductBlock({required this.productService}) {
-    _eventContrl.stream.listen((event) {
-      event.map<void>(init: (_) async {
-        _stateContrl.add(const ProductBlockState.loading());
-        await productService.createProducts(5);
-        _stateContrl.add(
-          ProductBlockState.loaded(prodData: productService),
-        );
-      }, setProd: (event) async {
-        return _stateContrl.add(
-          ProductBlockState.loaded(prodData: productService),
-        );
-      }, addProd: (event) async {
-        await productService.give();
-        return _stateContrl
-            .add(ProductBlockState.loaded(prodData: productService));
-      }, cleanProd: (event) {
-        cleane();
-        return _stateContrl
-            .add(ProductBlockState.loaded(prodData: productService));
-      });
+  final _stateContrl = StreamController<ProductBlock>();
+  final _eventContrl = StreamController<ProductBlockEvent>();
+
+  final _cartContrl = StreamController<ProductData>();
+
+  final _stateContrl1 = StreamController<Map<ProductData, int>>();
+  final _stateContrl2 = StreamController<Map<ProductData, int>>();
+
+  Stream<ProductBlock> get state => _stateContrl.stream;
+
+  Stream<Map<ProductData, int>> get cartState => _stateContrl1.stream;
+  Stream<Map<ProductData, int>> get goodsState => _stateContrl2.stream;
+
+  Sink<ProductBlockEvent> get action => _eventContrl.sink;
+  Sink<ProductData> get addAction => _cartContrl.sink;
+
+  MyBLoc() {
+    _eventContrl.stream.listen(_handleEvent);
+    _cartContrl.stream.listen((item) {
+      _addProduct(item);
     });
+    // _handleEvent(ProductBlockEvent.add);
   }
 
-  void addToCart(item) {
-    productService.myCart.add(item);
+  void _handleEvent(ProductBlockEvent action) async {
+    switch (action) {
+      case ProductBlockEvent.clear:
+        productBlock.cleaning();
+        print('_handleEvent clear');
+        break;
+      case ProductBlockEvent.add:
+        productBlock.createPrd(5);
+        print('_handleEvent add');
+        break;
+      default:
+        // productBlock.createPrd(5);
+        print('_handleEvent default');
+        break;
+    }
+    await Future.delayed(const Duration(seconds: 2));
+    _stateContrl2.add(productBlock.goods());
+    _stateContrl1.add(productBlock.show());
   }
 
-  void add(ProductBlockEvent event) {
-    if (_eventContrl.isClosed) return;
-    _eventContrl.add(event);
+  void _addProduct(ProductData item) async {
+    print('MyBLoc._addProduct($item)');
+    productBlock.addToCart(item);
+    await productBlock.give();
+    _stateContrl1.add(productBlock.show());
   }
 
   void dispose() {
     _eventContrl.close();
     _stateContrl.close();
   }
+}
 
-  void give() {
-    productService.give();
+@injectable
+class ProductBlock {
+  final ProductService productService = getIt.get<ProductService>();
+
+  ProductBlock() {}
+
+  void addToCart(item) {
+    productService.myCart.add(item);
+    print('addToCart: ${productService.myCart}');
   }
 
-  void cleane() {
+  void createPrd(int value) {
+    productService.createProducts(value);
+  }
+
+  void cleaning() {
     productService.myCart.clear();
     productService.out.clear();
   }
 
+  give() async {
+    await productService.give();
+    print('ProductBlock.give(): ${productService.out}');
+  }
+
   goods() {
-    return productService.array.values;
+    print('ProductBlock.goods(): ${productService.array}');
+    return productService.array;
   }
 
   show() {
+    print('ProductBlock.show(): ${productService.out}');
     return productService.out;
   }
-}
-
-@freezed
-class ProductBlockState with _$ProductBlockState {
-  const factory ProductBlockState.loading() = ProductLoadingState;
-  const factory ProductBlockState.loaded(
-      // {required Iterable<ProductData> prodData}) = ProductLoadedState;
-      {required ProductService prodData}) = ProductLoadedState;
-}
-
-@freezed
-class ProductBlockEvent with _$ProductBlockEvent {
-  const factory ProductBlockEvent.init() = _ProductInitEvent;
-  const factory ProductBlockEvent.setProd() = _ProductSetEvent;
-  const factory ProductBlockEvent.addProd() = _ProductAddEvent;
-  const factory ProductBlockEvent.cleanProd() = _ProductCleanEvent;
 }
