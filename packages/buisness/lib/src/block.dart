@@ -7,78 +7,90 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 GetIt getIt = GetIt.instance;
 
-enum ProductBlockEvent { clear, add, toCart, add_0, add_1, add_2, add_3, add_4 }
+enum ProductBlockEvent { clear, add, toCart }
 // abstract class ProductBlockEvent{}
 // class
 
 // class MyBLoc extends Bloc<ProductBlockEvent, Map<ProductData, int>> {
 // @injectable
 class MyBLoc extends Bloc<ProductBlockEvent, ProductBlock> {
-  // final ProductBlock productBlock = ProductBlock();
-  // late final ProductBlock productBlock;
+  static int init = 0;
 
-  int init = 0;
+  duplicate(ProductBlock inlet) {
+    ProductBlock _outlet = ProductBlock();
+    _outlet.productService.out = inlet.productService.out;
+    _outlet.productService.array = inlet.productService.array;
+    _outlet.productService.myCart = inlet.productService.myCart;
+    return _outlet;
+  }
+
   MyBLoc() : super(ProductBlock()) {
-    if (init == 0) {
-      state.createPrd(5);
-      // productBlock.createPrd(5);
-      // emit(state);
-      init++;
-    }
-    on((ProductBlockEvent event, emit) {
-      switch (event) {
-        case ProductBlockEvent.add:
-          state.createPrd(5);
-          return emit(state);
+    // if (init == 0) {
+    //   state.createPrd(5);
+    //   init++;
+    // }
+    on(
+      (ProductBlockEvent event, emit) async {
+        switch (event) {
+          case ProductBlockEvent.add:
+            print('ProductBlockEvent.add');
+            if (init == 0) {
+              state.createPrd(5);
+              init++;
+              return emit(duplicate(state));
+            } else {
+              return emit(state);
+            }
 
-        case ProductBlockEvent.clear:
-          state.cleaning();
-          return emit(state);
+          case ProductBlockEvent.clear:
+            state.cleaning();
+            return emit(duplicate(state));
 
-        case ProductBlockEvent.add_0:
-          state.addToCart(state.goods().keys[0]);
-          return emit(state);
+          case (ProductBlockEvent.toCart):
+            print('ProductBlockEvent.toCart');
+            return emit(duplicate(state));
 
-        case (ProductBlockEvent.toCart):
-          print('ProductBlockEvent.toCart');
-          // state.addToCart(ProductData);
-          return emit(state);
-
-        default:
-          print('emit: default');
-      }
-      // if (event == ProductBlockEvent.add) {
-      //   state.createPrd(5);
-      //   emit(state);
-      // }
-    });
+          default:
+            state.createPrd(5);
+            return emit(duplicate(state));
+        }
+      },
+    );
+    // int init = 0;
+    // if (init == 0) {
+    // state.createPrd(5);
+    // productBlock.createPrd(5);
+    // emit(duplicate(state));
+    // init++;
+    // }
   }
 
   // Stream<ProductBlock> toCart(ProductBlockEvent event, ProductData e) async* {
   //   print('Stream toCart');
   //   if (event == ProductBlockEvent.toCart) {
-  //     productBlock.addToCart(e);
-  //     productBlock.give();
+  //     state.addToCart(e);
+  //     state.give();
   //   }
-  //   yield productBlock;
+  //   yield state;
   // }
 
   // @override
   // Stream<ProductBlock> mapEventToState(ProductBlockEvent event) async* {
   //   switch (event) {
   //     case ProductBlockEvent.add:
-  //       productBlock.createPrd(5);
+  //       state.createPrd(5);
   //       print('Stream: ProductBlockEvent.add');
-  //       yield productBlock;
+  //       // emit(state);
+  //       yield state;
   //       break;
   //     case ProductBlockEvent.clear:
-  //       productBlock.cleaning();
+  //       state.cleaning();
   //       print('Stream: ProductBlockEvent.clear');
-  //       yield productBlock;
+  //       yield state;
   //       break;
   //     case ProductBlockEvent.add_0:
-  //       productBlock.addToCart(productBlock.goods().keys[0]);
-  //       yield productBlock;
+  //       state.addToCart(state.goods().keys[0]);
+  //       yield state;
   //       break;
   //     default:
   //       print('Stream: default');

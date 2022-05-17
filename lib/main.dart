@@ -19,7 +19,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter_hw_13',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: BlocProvider(
-        create: (context) => MyBLoc(),
+        lazy: false,
+        create: (_) => MyBLoc(),
         child: MyHomePage(
           title: 'Flutter_hw_13',
         ),
@@ -35,6 +36,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('Page build');
+    context.read<MyBLoc>().add(ProductBlockEvent.add);
 
     return Scaffold(
       appBar: AppBar(
@@ -65,11 +67,11 @@ class MyHomePage extends StatelessWidget {
                                       'Товар ${e.id}',
                                     ),
                                     trailing: IconButton(
-                                      onPressed: () {
+                                      onPressed: () async {
                                         state.addToCart(e);
-                                        state.give();
+                                        await state.give();
                                         print('Товар $e добавлен в поток');
-                                        return context
+                                        context
                                             .read<MyBLoc>()
                                             .add(ProductBlockEvent.toCart);
                                       },
@@ -103,8 +105,6 @@ class MyHomePage extends StatelessWidget {
                     ),
                     BlocBuilder<MyBLoc, ProductBlock>(
                       builder: (context, state) {
-                        // print('CART snapshot.data: ${snapshot.data}');
-                        // var _out = snapshot.data;
                         if (state.show().isEmpty == true) {
                           return Center(child: Text('Корзина пуста'));
                         } else {
@@ -134,8 +134,7 @@ class MyHomePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // context.read<MyBLoc>().mapEventToState(ProductBlockEvent.clear);
-          // _prodBlock.action.add(ProductBlockEvent.clear);
+          context.read<MyBLoc>().add(ProductBlockEvent.clear);
         },
         tooltip: 'Increment',
         child: const Icon(Icons.delete),
