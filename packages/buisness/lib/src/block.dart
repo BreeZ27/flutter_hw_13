@@ -7,79 +7,123 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 GetIt getIt = GetIt.instance;
 
-enum ProductBlockEvent { clear, add, toCart }
+enum ProductBlockEvent { clear, add, toCart, add_0, add_1, add_2, add_3, add_4 }
+// abstract class ProductBlockEvent{}
+// class
 
-class MyBLoc {
-  final ProductBlock productBlock = ProductBlock();
+// class MyBLoc extends Bloc<ProductBlockEvent, Map<ProductData, int>> {
+// @injectable
+class MyBLoc extends Bloc<ProductBlockEvent, ProductBlock> {
+  // final ProductBlock productBlock = ProductBlock();
+  // late final ProductBlock productBlock;
 
-  final _stateContrl = StreamController<ProductBlock>();
-  final _eventContrl = StreamController<ProductBlockEvent>();
-
-  final _cartContrl = StreamController<ProductData>();
-
-  final _stateContrl1 = StreamController<Map<ProductData, int>>();
-  final _stateContrl2 = StreamController<Map<ProductData, int>>();
-
-  Stream<ProductBlock> get state => _stateContrl.stream;
-
-  Stream<Map<ProductData, int>> get cartState => _stateContrl1.stream;
-  Stream<Map<ProductData, int>> get goodsState => _stateContrl2.stream;
-
-  Sink<ProductBlockEvent> get action => _eventContrl.sink;
-  Sink<ProductData> get addAction => _cartContrl.sink;
-
-  MyBLoc() {
-    _eventContrl.stream.listen(_handleEvent);
-    _cartContrl.stream.listen((item) {
-      _addProduct(item);
-    });
-    // _handleEvent(ProductBlockEvent.add);
-  }
-
-  void _handleEvent(ProductBlockEvent action) async {
-    switch (action) {
-      case ProductBlockEvent.clear:
-        productBlock.cleaning();
-        print('_handleEvent clear');
-        break;
-      case ProductBlockEvent.add:
-        productBlock.createPrd(5);
-        print('_handleEvent add');
-        break;
-      default:
-        // productBlock.createPrd(5);
-        print('_handleEvent default');
-        break;
+  int init = 0;
+  MyBLoc() : super(ProductBlock()) {
+    if (init == 0) {
+      state.createPrd(5);
+      // productBlock.createPrd(5);
+      // emit(state);
+      init++;
     }
-    await Future.delayed(const Duration(seconds: 2));
-    _stateContrl2.add(productBlock.goods());
-    _stateContrl1.add(productBlock.show());
+    on((ProductBlockEvent event, emit) {
+      switch (event) {
+        case ProductBlockEvent.add:
+          state.createPrd(5);
+          return emit(state);
+
+        case ProductBlockEvent.clear:
+          state.cleaning();
+          return emit(state);
+
+        case ProductBlockEvent.add_0:
+          state.addToCart(state.goods().keys[0]);
+          return emit(state);
+
+        case (ProductBlockEvent.toCart):
+          print('ProductBlockEvent.toCart');
+          // state.addToCart(ProductData);
+          return emit(state);
+
+        default:
+          print('emit: default');
+      }
+      // if (event == ProductBlockEvent.add) {
+      //   state.createPrd(5);
+      //   emit(state);
+      // }
+    });
   }
 
-  void _addProduct(ProductData item) async {
-    print('MyBLoc._addProduct($item)');
-    productBlock.addToCart(item);
-    await productBlock.give();
-    _stateContrl1.add(productBlock.show());
-  }
+  // Stream<ProductBlock> toCart(ProductBlockEvent event, ProductData e) async* {
+  //   print('Stream toCart');
+  //   if (event == ProductBlockEvent.toCart) {
+  //     productBlock.addToCart(e);
+  //     productBlock.give();
+  //   }
+  //   yield productBlock;
+  // }
 
-  void dispose() {
-    _eventContrl.close();
-    _stateContrl.close();
-    _stateContrl1.close();
-    _stateContrl2.close();
-  }
+  // @override
+  // Stream<ProductBlock> mapEventToState(ProductBlockEvent event) async* {
+  //   switch (event) {
+  //     case ProductBlockEvent.add:
+  //       productBlock.createPrd(5);
+  //       print('Stream: ProductBlockEvent.add');
+  //       yield productBlock;
+  //       break;
+  //     case ProductBlockEvent.clear:
+  //       productBlock.cleaning();
+  //       print('Stream: ProductBlockEvent.clear');
+  //       yield productBlock;
+  //       break;
+  //     case ProductBlockEvent.add_0:
+  //       productBlock.addToCart(productBlock.goods().keys[0]);
+  //       yield productBlock;
+  //       break;
+  //     default:
+  //       print('Stream: default');
+  //   }
+  // }
+
+  // void _handleEvent(ProductBlockEvent action) async {
+  //   switch (action) {
+  //     case ProductBlockEvent.clear:
+  //       productBlock.cleaning();
+  //       print('_handleEvent clear');
+  //       break;
+  //     case ProductBlockEvent.add:
+  //       productBlock.createPrd(5);
+  //       print('_handleEvent add');
+  //       break;
+  //     default:
+  //       // productBlock.createPrd(5);
+  //       print('_handleEvent default');
+  //       break;
+  //   }
+  //   await Future.delayed(const Duration(seconds: 2));
+  // _stateContrl2.add(productBlock.goods());
+  // _stateContrl1.add(productBlock.show());
+  // }
+
+  // void _addProduct(ProductData item) async {
+  //   print('MyBLoc._addProduct($item)');
+  //   productBlock.addToCart(item);
+  //   await productBlock.give();
+  // _stateContrl1.add(productBlock.show());
+  // }
 }
 
 @injectable
 class ProductBlock {
   final ProductService productService = getIt.get<ProductService>();
 
-  ProductBlock() {}
+  ProductBlock() {
+    print('ProductBlock created ${productService.hashCode}');
+  }
 
   void addToCart(item) {
     productService.myCart.add(item);
-    print('addToCart: ${productService.myCart}');
+    print('ProductBlock.addToCart(): ${productService.myCart}');
   }
 
   void createPrd(int value) {
