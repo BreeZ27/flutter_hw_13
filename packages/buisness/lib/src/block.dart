@@ -9,7 +9,7 @@ GetIt getIt = GetIt.instance;
 
 enum ProductBlockEvent { clear, add, toCart }
 
-class MyBLoc extends Bloc<ProductBlockEvent, ProductBlock> {
+class MyBLoc extends Cubit<ProductBlock> {
   static int init = 0;
 
   duplicate(ProductBlock inlet) {
@@ -20,35 +20,54 @@ class MyBLoc extends Bloc<ProductBlockEvent, ProductBlock> {
     return _outlet;
   }
 
-  MyBLoc() : super(ProductBlock()) {
-    on(
-      (ProductBlockEvent event, emit) async {
-        switch (event) {
-          case ProductBlockEvent.add:
-            print('ProductBlockEvent.add');
-            if (init == 0) {
-              state.createPrd(5);
-              init++;
-              return emit(duplicate(state));
-            } else {
-              return emit(state);
-            }
+  MyBLoc() : super(ProductBlock()) {}
 
-          case ProductBlockEvent.clear:
-            state.cleaning();
-            return emit(duplicate(state));
-
-          case (ProductBlockEvent.toCart):
-            print('ProductBlockEvent.toCart');
-            return emit(duplicate(state));
-
-          default:
-            state.createPrd(5);
-            return emit(duplicate(state));
-        }
-      },
-    );
+  void add() {
+    if (init == 0) {
+      state.createPrd(5);
+      init++;
+    }
+    emit(duplicate(state));
   }
+
+  void clear() {
+    state.cleaning();
+    emit(duplicate(state));
+  }
+
+  void toCart(ProductData e) async {
+    state.addToCart(e);
+    await state.give();
+    emit(duplicate(state));
+  }
+  // on(
+  //   (ProductBlockEvent event, emit) async {
+  //     switch (event) {
+  //       case ProductBlockEvent.add:
+  //         print('ProductBlockEvent.add');
+  //         if (init == 0) {
+  //           state.createPrd(5);
+  //           init++;
+  //           return emit(duplicate(state));
+  //         } else {
+  //           return emit(state);
+  //         }
+
+  //       case ProductBlockEvent.clear:
+  //         state.cleaning();
+  //         return emit(duplicate(state));
+
+  //       case (ProductBlockEvent.toCart):
+  //         print('ProductBlockEvent.toCart');
+  //         return emit(duplicate(state));
+
+  //       default:
+  //         state.createPrd(5);
+  //         return emit(duplicate(state));
+  //     }
+  // },
+  // );
+  // }
 }
 
 @injectable

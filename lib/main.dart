@@ -36,7 +36,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('Page build');
-    context.read<MyBLoc>().add(ProductBlockEvent.add);
+    context.read<MyBLoc>().add();
 
     return Scaffold(
       appBar: AppBar(
@@ -67,13 +67,9 @@ class MyHomePage extends StatelessWidget {
                                       'Товар ${e.id}',
                                     ),
                                     trailing: IconButton(
-                                      onPressed: () async {
-                                        state.addToCart(e);
-                                        await state.give();
+                                      onPressed: () {
                                         print('Товар $e добавлен в поток');
-                                        context
-                                            .read<MyBLoc>()
-                                            .add(ProductBlockEvent.toCart);
+                                        context.read<MyBLoc>().toCart(e);
                                       },
                                       icon: Icon(Icons.add_box_outlined),
                                     ),
@@ -134,7 +130,7 @@ class MyHomePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.read<MyBLoc>().add(ProductBlockEvent.clear);
+          context.read<MyBLoc>().clear();
         },
         tooltip: 'Increment',
         child: const Icon(Icons.delete),
