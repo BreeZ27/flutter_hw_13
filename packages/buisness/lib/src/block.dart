@@ -1,52 +1,28 @@
 import 'dart:async';
 import 'package:data/data.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:product_model/model.dart';
 
 GetIt getIt = GetIt.instance;
 
-enum ProductBlockEvent { clear, add, toCart }
+class ProductBlockClearAction {}
 
-class MyBLoc extends Bloc<ProductBlockEvent, ProductBlock> {
-  static int init = 0;
+@immutable
+class AppState {
+  late final ProductBlock productBlock;
 
-  duplicate(ProductBlock inlet) {
-    ProductBlock _outlet = ProductBlock();
-    _outlet.productService.out = inlet.productService.out;
-    _outlet.productService.array = inlet.productService.array;
-    _outlet.productService.myCart = inlet.productService.myCart;
-    return _outlet;
+  AppState(ProductBlock block) {
+    this.productBlock = block;
   }
 
-  MyBLoc() : super(ProductBlock()) {
-    on(
-      (ProductBlockEvent event, emit) async {
-        switch (event) {
-          case ProductBlockEvent.add:
-            print('ProductBlockEvent.add');
-            if (init == 0) {
-              state.createPrd(5);
-              init++;
-              return emit(duplicate(state));
-            } else {
-              return emit(state);
-            }
+  factory AppState.initial() => AppState(ProductBlock());
 
-          case ProductBlockEvent.clear:
-            state.cleaning();
-            return emit(duplicate(state));
-
-          case (ProductBlockEvent.toCart):
-            print('ProductBlockEvent.toCart');
-            return emit(duplicate(state));
-
-          default:
-            state.createPrd(5);
-            return emit(duplicate(state));
-        }
-      },
-    );
+  AppState copyWith({
+    required ProductBlock value,
+  }) {
+    return AppState(value);
   }
 }
 
@@ -68,7 +44,8 @@ class ProductBlock {
   }
 
   void cleaning() {
-    productService.cleane();
+    productService.myCart.clear();
+    productService.out.clear();
   }
 
   give() async {
