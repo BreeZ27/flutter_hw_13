@@ -40,34 +40,6 @@ class MyBLoc extends Cubit<ProductBlock> {
     await state.give();
     emit(duplicate(state));
   }
-  // on(
-  //   (ProductBlockEvent event, emit) async {
-  //     switch (event) {
-  //       case ProductBlockEvent.add:
-  //         print('ProductBlockEvent.add');
-  //         if (init == 0) {
-  //           state.createPrd(5);
-  //           init++;
-  //           return emit(duplicate(state));
-  //         } else {
-  //           return emit(state);
-  //         }
-
-  //       case ProductBlockEvent.clear:
-  //         state.cleaning();
-  //         return emit(duplicate(state));
-
-  //       case (ProductBlockEvent.toCart):
-  //         print('ProductBlockEvent.toCart');
-  //         return emit(duplicate(state));
-
-  //       default:
-  //         state.createPrd(5);
-  //         return emit(duplicate(state));
-  //     }
-  // },
-  // );
-  // }
 }
 
 @injectable
