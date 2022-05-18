@@ -7,25 +7,6 @@ import 'package:product_model/model.dart';
 
 GetIt getIt = GetIt.instance;
 
-class ProductBlockClearAction {}
-
-@immutable
-class AppState {
-  late final ProductBlock productBlock;
-
-  AppState(ProductBlock block) {
-    this.productBlock = block;
-  }
-
-  factory AppState.initial() => AppState(ProductBlock());
-
-  AppState copyWith({
-    required ProductBlock value,
-  }) {
-    return AppState(value);
-  }
-}
-
 @injectable
 class ProductBlock {
   final ProductService productService = getIt.get<ProductService>();
