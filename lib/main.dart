@@ -1,16 +1,14 @@
 import 'package:buisness/buisness.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-import 'package:product_model/model.dart';
 
 void main() {
   initializeBlocs();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +18,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.blue),
       home: BlocProvider(
         lazy: false,
-        create: (_) => MyBLoc(),
-        child: MyHomePage(
+        create: (_) => MyBLoC(),
+        child: const MyHomePage(
           title: 'Flutter_hw_13',
         ),
       ),
@@ -30,13 +28,13 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
   Widget build(BuildContext context) {
     print('Page build');
-    context.read<MyBLoc>().add();
+    context.read<MyBLoC>().add();
 
     return Scaffold(
       appBar: AppBar(
@@ -57,7 +55,7 @@ class MyHomePage extends StatelessWidget {
                         style: Theme.of(context).textTheme.headline6,
                       ),
                     ),
-                    BlocBuilder<MyBLoc, ProductBlock>(
+                    BlocBuilder<MyBLoC, ProductBlock>(
                       builder: (context, state) {
                         return Column(
                           children: [
@@ -69,9 +67,9 @@ class MyHomePage extends StatelessWidget {
                                     trailing: IconButton(
                                       onPressed: () {
                                         print('Товар $e добавлен в поток');
-                                        context.read<MyBLoc>().toCart(e);
+                                        context.read<MyBLoC>().toCart(e);
                                       },
-                                      icon: Icon(Icons.add_box_outlined),
+                                      icon: const Icon(Icons.add_box_outlined),
                                     ),
                                   ),
                                 ),
@@ -99,10 +97,10 @@ class MyHomePage extends StatelessWidget {
                         style: Theme.of(context).textTheme.headline6,
                       ),
                     ),
-                    BlocBuilder<MyBLoc, ProductBlock>(
+                    BlocBuilder<MyBLoC, ProductBlock>(
                       builder: (context, state) {
                         if (state.show().isEmpty == true) {
-                          return Center(child: Text('Корзина пуста'));
+                          return const Center(child: Text('Корзина пуста'));
                         } else {
                           return Column(
                             children: [
@@ -130,7 +128,7 @@ class MyHomePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.read<MyBLoc>().clear();
+          context.read<MyBLoC>().clear();
         },
         tooltip: 'Increment',
         child: const Icon(Icons.delete),

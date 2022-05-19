@@ -6,5 +6,5 @@ abstract class ProductService {
   Future<Map<ProductData, int>> give();
   List<ProductData> myCart = [];
   Map<ProductData, int> out = {};
-  void cleane();
+  void clean();
 }

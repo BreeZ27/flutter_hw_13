@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:data/data.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -9,9 +8,13 @@ GetIt getIt = GetIt.instance;
 
 enum ProductBlockEvent { clear, add, toCart }
 
-class MyBLoc extends Cubit<ProductBlock> {
+class MyBLoC extends Cubit<ProductBlock> {
+  // Переменная, которая при инициализации и вызове метода add() один раз
+  //создаёт товары в Map array
   static int init = 0;
 
+  // Функция, которая создаёт копию текущего ProductBlock
+  // используется для передачи в функцию emit нового состояния ProductBlock
   duplicate(ProductBlock inlet) {
     ProductBlock _outlet = ProductBlock();
     _outlet.productService.out = inlet.productService.out;
@@ -20,18 +23,18 @@ class MyBLoc extends Cubit<ProductBlock> {
     return _outlet;
   }
 
-  MyBLoc() : super(ProductBlock()) {}
+  MyBLoC() : super(ProductBlock());
 
   void add() {
     if (init == 0) {
-      state.createPrd(5);
+      state.createProducts(5);
       init++;
     }
     emit(duplicate(state));
   }
 
   void clear() {
-    state.cleaning();
+    state.clean();
     emit(duplicate(state));
   }
 
@@ -50,29 +53,36 @@ class ProductBlock {
     print('ProductBlock created ${productService.hashCode}');
   }
 
+  // Функция, которая добавляет указанный товар в список myCart
   void addToCart(item) {
     productService.myCart.add(item);
     print('ProductBlock.addToCart(): ${productService.myCart}');
   }
 
-  void createPrd(int value) {
+  // Функция, которая создаёт указанное количество товаров в Map array
+  void createProducts(int value) {
     productService.createProducts(value);
   }
 
-  void cleaning() {
-    productService.cleane();
+  // Функция которая очищает корзину и форматированный Map out
+  void clean() {
+    productService.clean();
   }
 
+  // Функция, которая оценивает количсество каждого товара в корзине и
+  //формирует Map, который передает в переменную out
   give() async {
     await productService.give();
     print('ProductBlock.give(): ${productService.out}');
   }
 
+  // Функция, которая возвращает Map с существующими товарами
   goods() {
     print('ProductBlock.goods(): ${productService.array}');
     return productService.array;
   }
 
+  // Функция, которая возвращает Map с товарами в корзине и их количеством
   show() {
     print('ProductBlock.show(): ${productService.out}');
     return productService.out;
