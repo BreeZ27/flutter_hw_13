@@ -39,7 +39,7 @@ class MyProductService implements ProductService {
   }
 
   @override
-  cleane() {
+  clean() {
     myCart.clear();
     out.clear();
   }

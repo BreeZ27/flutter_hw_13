@@ -1,16 +1,14 @@
 import 'package:buisness/buisness.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-import 'package:product_model/model.dart';
 
 void main() {
   initializeBlocs();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +19,7 @@ class MyApp extends StatelessWidget {
       home: BlocProvider(
         lazy: false,
         create: (_) => MyBLoc(),
-        child: MyHomePage(
+        child: const MyHomePage(
           title: 'Flutter_hw_13',
         ),
       ),
@@ -30,7 +28,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
@@ -75,7 +73,7 @@ class MyHomePage extends StatelessWidget {
                                             .read<MyBLoc>()
                                             .add(ProductBlockEvent.toCart);
                                       },
-                                      icon: Icon(Icons.add_box_outlined),
+                                      icon: const Icon(Icons.add_box_outlined),
                                     ),
                                   ),
                                 ),
@@ -106,7 +104,7 @@ class MyHomePage extends StatelessWidget {
                     BlocBuilder<MyBLoc, ProductBlock>(
                       builder: (context, state) {
                         if (state.show().isEmpty == true) {
-                          return Center(child: Text('Корзина пуста'));
+                          return const Center(child: Text('Корзина пуста'));
                         } else {
                           return Column(
                             children: [

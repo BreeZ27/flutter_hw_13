@@ -1,8 +1,6 @@
-import 'dart:async';
 import 'package:data/data.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:product_model/model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 GetIt getIt = GetIt.instance;
@@ -27,7 +25,7 @@ class MyBLoc extends Bloc<ProductBlockEvent, ProductBlock> {
           case ProductBlockEvent.add:
             print('ProductBlockEvent.add');
             if (init == 0) {
-              state.createPrd(5);
+              state.createProducts(5);
               init++;
               return emit(duplicate(state));
             } else {
@@ -35,7 +33,7 @@ class MyBLoc extends Bloc<ProductBlockEvent, ProductBlock> {
             }
 
           case ProductBlockEvent.clear:
-            state.cleaning();
+            state.clean();
             return emit(duplicate(state));
 
           case (ProductBlockEvent.toCart):
@@ -43,7 +41,7 @@ class MyBLoc extends Bloc<ProductBlockEvent, ProductBlock> {
             return emit(duplicate(state));
 
           default:
-            state.createPrd(5);
+            state.createProducts(5);
             return emit(duplicate(state));
         }
       },
