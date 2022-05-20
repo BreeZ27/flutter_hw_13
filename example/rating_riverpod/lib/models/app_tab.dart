@@ -1,2 +1,0 @@
-
-enum AppTab { speakers, talks }
