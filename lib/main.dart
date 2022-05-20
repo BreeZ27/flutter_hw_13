@@ -1,14 +1,19 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:buisness/buisness.dart';
-import 'package:get_it/get_it.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 void main() {
   initializeBlocs();
   runApp(MyApp());
+}
+
+duplicate(ProductBlock inlet) {
+  ProductBlock _outlet = ProductBlock();
+  _outlet.productService.out = inlet.productService.out;
+  _outlet.productService.array = inlet.productService.array;
+  _outlet.productService.myCart = inlet.productService.myCart;
+  return _outlet;
 }
 
 class ProductBlockClearAction {}
@@ -20,36 +25,77 @@ class ProductBlockToCartAction {}
 final clearReducer = combineReducers<ProductBlock>(
     [TypedReducer<ProductBlock, ProductBlockClearAction>(_clear)]);
 
+final addReducer = combineReducers<ProductBlock>(
+    [TypedReducer<ProductBlock, ProductBlockAddAction>(_add)]);
+
+final toCartReducer = combineReducers<ProductBlock>(
+    [TypedReducer<ProductBlock, ProductBlockToCartAction>(_toCart)]);
+
 ProductBlock _clear(ProductBlock productBlock, ProductBlockClearAction action) {
-  productBlock.cleaning();
+  ProductBlock _newProductBlock = duplicate(productBlock);
+  _newProductBlock.clean();
   print('ProductBlock _clear');
-  return productBlock;
+  return _newProductBlock;
+}
+
+ProductBlock _add(ProductBlock productBlock, ProductBlockAddAction action) {
+  ProductBlock _newProductBlock = duplicate(productBlock);
+  _newProductBlock.createPrd(5);
+  print('ProductBlock _add');
+  return _newProductBlock;
+}
+
+ProductBlock _toCart(
+    ProductBlock productBlock, ProductBlockToCartAction action) {
+  ProductBlock _newProductBlock = duplicate(productBlock);
+  _newProductBlock.give();
+  print('ProductBlock _toCart');
+  return _newProductBlock;
 }
 
 AppState appReducer(AppState state, action) {
-  var a = clearReducer(state.productBlock, action);
-  print('AppState appReducer $a');
-  var _newState = state.duplicate(clearReducer(a, action));
-
-  return _newState;
+  print('appReducer started');
+  if (action == ProductBlockClearAction()) {
+    print('appReducer: ProductBlockClearAction');
+    return duplicate(
+      clearReducer(state.productBlock, action),
+    );
+  }
+  if (action == ProductBlockAddAction()) {
+    print('appReducer: ProductBlockClearAction');
+    return duplicate(
+      addReducer(state.productBlock, action),
+    );
+  }
+  if (action == ProductBlockToCartAction()) {
+    print('appReducer: ProductBlockClearAction');
+    return duplicate(
+      toCartReducer(state.productBlock, action),
+    );
+  } else {
+    return duplicate(toCartReducer(state.productBlock, action));
+  }
 }
+
+// var a = clearReducer(state.productBlock, action);
+// print('AppState appReducer $a');
+// var _newState = state.duplicate(clearReducer(a, action));
+
+// return _newState;
 
 @immutable
 class AppState {
   late final ProductBlock productBlock;
 
   AppState(ProductBlock block) {
-    this.productBlock = block;
+    productBlock = block;
   }
 
-  factory AppState.initial() => AppState(ProductBlock());
-
-  duplicate(ProductBlock inlet) {
-    ProductBlock _outlet = ProductBlock();
-    _outlet.productService.out = inlet.productService.out;
-    _outlet.productService.array = inlet.productService.array;
-    _outlet.productService.myCart = inlet.productService.myCart;
-    return _outlet;
+  factory AppState.initial() {
+    ProductBlock _productBlock = ProductBlock();
+    // _productBlock.createPrd(5);
+    print('AppState initial');
+    return AppState(_productBlock);
   }
 
   AppState copyWith({
@@ -67,13 +113,14 @@ class MyConnector extends StatelessWidget {
     return StoreConnector<AppState, _ViewModel>(
         converter: _ViewModel.fromStore,
         builder: (context, vm) {
-          return MyHomePage(
+          MyHomePage _myHomePage = MyHomePage(
             title: 'Flutter_HW_13',
             add: vm.onAdd,
             clear: vm.onClear,
             toCart: vm.onToCart,
             productBlock: vm.productBlock,
           );
+          return _myHomePage;
         });
   }
 }
@@ -161,6 +208,21 @@ class MyHomePage extends StatelessWidget {
                         style: Theme.of(context).textTheme.headline6,
                       ),
                     ),
+                    ...productBlock.goods().keys.map(
+                          (e) => ListTile(
+                            title: Text(
+                              'Товар ${e.id}',
+                            ),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.add_box_outlined),
+                              onPressed: () async {
+                                productBlock.addToCart(e);
+                                toCart;
+                                // add;
+                              },
+                            ),
+                          ),
+                        ),
                   ],
                 ),
               ),
@@ -182,7 +244,16 @@ class MyHomePage extends StatelessWidget {
                     ),
                   ),
                   Column(
-                    children: [],
+                    children: [
+                      ...productBlock.show().keys.map(
+                            (e) => ListTile(
+                              title: Text(
+                                'Товар ${e.id}',
+                              ),
+                              trailing: Text('x ${productBlock.show()[e]}'),
+                            ),
+                          ),
+                    ],
                   )
                 ],
               ),

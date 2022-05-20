@@ -24,7 +24,7 @@ class ProductBlock {
     productService.createProducts(value);
   }
 
-  void cleaning() {
+  void clean() {
     productService.myCart.clear();
     productService.out.clear();
   }
