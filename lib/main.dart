@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:buisness/buisness.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:product_model/model.dart';
 
 void main() {
   initializeBlocs();
@@ -20,68 +21,50 @@ class ProductBlockClearAction {}
 
 class ProductBlockAddAction {}
 
-class ProductBlockToCartAction {}
+class ProductBlockToCartAction {
+  // final ProductData product;
+  // ProductBlockToCartAction({required this.product});
+}
 
-final clearReducer = combineReducers<ProductBlock>(
-    [TypedReducer<ProductBlock, ProductBlockClearAction>(_clear)]);
-
-final addReducer = combineReducers<ProductBlock>(
-    [TypedReducer<ProductBlock, ProductBlockAddAction>(_add)]);
-
-final toCartReducer = combineReducers<ProductBlock>(
-    [TypedReducer<ProductBlock, ProductBlockToCartAction>(_toCart)]);
+final productReducer = combineReducers<ProductBlock>([
+  TypedReducer<ProductBlock, ProductBlockClearAction>(_clear),
+  TypedReducer<ProductBlock, ProductBlockAddAction>(_add),
+  TypedReducer<ProductBlock, ProductBlockToCartAction>(_toCart),
+]);
 
 ProductBlock _clear(ProductBlock productBlock, ProductBlockClearAction action) {
-  ProductBlock _newProductBlock = duplicate(productBlock);
-  _newProductBlock.clean();
   print('ProductBlock _clear');
-  return _newProductBlock;
+  productBlock.clean();
+  return productBlock;
+  // ProductBlock _newProductBlock = duplicate(productBlock);
+  // _newProductBlock.clean();
+  // return _newProductBlock;
 }
 
 ProductBlock _add(ProductBlock productBlock, ProductBlockAddAction action) {
-  ProductBlock _newProductBlock = duplicate(productBlock);
-  _newProductBlock.createPrd(5);
   print('ProductBlock _add');
-  return _newProductBlock;
+  productBlock.createPrd(5);
+  return productBlock;
+  // ProductBlock _newProductBlock = duplicate(productBlock);
+  // _newProductBlock.createPrd(5);
+  // return _newProductBlock;
 }
 
 ProductBlock _toCart(
     ProductBlock productBlock, ProductBlockToCartAction action) {
-  ProductBlock _newProductBlock = duplicate(productBlock);
-  _newProductBlock.give();
   print('ProductBlock _toCart');
-  return _newProductBlock;
+  productBlock.give();
+  return productBlock;
+  // ProductBlock _newProductBlock = duplicate(productBlock);
+  // _newProductBlock.give();
+  // return _newProductBlock;
 }
 
 AppState appReducer(AppState state, action) {
+  // Future.delayed(Duration(seconds: 2));
   print('appReducer started');
-  if (action == ProductBlockClearAction()) {
-    print('appReducer: ProductBlockClearAction');
-    return duplicate(
-      clearReducer(state.productBlock, action),
-    );
-  }
-  if (action == ProductBlockAddAction()) {
-    print('appReducer: ProductBlockClearAction');
-    return duplicate(
-      addReducer(state.productBlock, action),
-    );
-  }
-  if (action == ProductBlockToCartAction()) {
-    print('appReducer: ProductBlockClearAction');
-    return duplicate(
-      toCartReducer(state.productBlock, action),
-    );
-  } else {
-    return duplicate(toCartReducer(state.productBlock, action));
-  }
+  return AppState(productReducer(duplicate(state.productBlock), action));
 }
-
-// var a = clearReducer(state.productBlock, action);
-// print('AppState appReducer $a');
-// var _newState = state.duplicate(clearReducer(a, action));
-
-// return _newState;
 
 @immutable
 class AppState {
@@ -92,10 +75,8 @@ class AppState {
   }
 
   factory AppState.initial() {
-    ProductBlock _productBlock = ProductBlock();
-    // _productBlock.createPrd(5);
     print('AppState initial');
-    return AppState(_productBlock);
+    return AppState(ProductBlock());
   }
 
   AppState copyWith({
@@ -110,33 +91,38 @@ class MyConnector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('MyConnector started');
     return StoreConnector<AppState, _ViewModel>(
-        converter: _ViewModel.fromStore,
-        builder: (context, vm) {
-          MyHomePage _myHomePage = MyHomePage(
-            title: 'Flutter_HW_13',
-            add: vm.onAdd,
-            clear: vm.onClear,
-            toCart: vm.onToCart,
-            productBlock: vm.productBlock,
-          );
-          return _myHomePage;
-        });
+      converter: _ViewModel.fromStore,
+      builder: (context, vm) => MyHomePage(
+        title: 'Flutter_HW_13',
+        add: vm.onAdd,
+        clear: vm.onClear,
+        toCart: vm.onToCart,
+        productBlock: vm.productBlock,
+        initFunc: () {
+          StoreProvider.of<AppState>(context).dispatch(ProductBlockAddAction());
+          print('MyConnector dispatched');
+        },
+      ),
+    );
   }
 }
 
 class _ViewModel {
   final ProductBlock productBlock;
-  final VoidCallback onToCart;
-  final VoidCallback onClear;
-  final VoidCallback onAdd;
+  final Function() onToCart;
+  final Function() onClear;
+  final Function() onAdd;
 
   _ViewModel({
     required this.productBlock,
     required this.onToCart,
     required this.onClear,
     required this.onAdd,
-  });
+  }) {
+    print('_ViewModel started');
+  }
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
@@ -158,8 +144,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('build');
-    return StoreProvider(
+    print('MyApp started');
+    return StoreProvider<AppState>(
       store: store,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -171,27 +157,41 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({
-    Key? key,
-    required this.title,
-    required this.add,
-    required this.productBlock,
-    required this.clear,
-    required this.toCart,
-  }) : super(key: key);
+class MyHomePage extends StatefulWidget {
+  const MyHomePage(
+      {Key? key,
+      required this.title,
+      required this.add,
+      required this.productBlock,
+      required this.clear,
+      required this.toCart,
+      required this.initFunc})
+      : super(key: key);
 
   final String title;
   final ProductBlock productBlock;
   final VoidCallback toCart;
   final VoidCallback clear;
   final VoidCallback add;
+  final Function initFunc;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    widget.initFunc();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    print('MyHomePage started');
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(widget.title),
       ),
       body: Center(
         child: Column(
@@ -208,7 +208,7 @@ class MyHomePage extends StatelessWidget {
                         style: Theme.of(context).textTheme.headline6,
                       ),
                     ),
-                    ...productBlock.goods().keys.map(
+                    ...widget.productBlock.goods().keys.map(
                           (e) => ListTile(
                             title: Text(
                               'Товар ${e.id}',
@@ -216,8 +216,8 @@ class MyHomePage extends StatelessWidget {
                             trailing: IconButton(
                               icon: const Icon(Icons.add_box_outlined),
                               onPressed: () async {
-                                productBlock.addToCart(e);
-                                toCart;
+                                widget.productBlock.addToCart(e);
+                                widget.toCart();
                                 // add;
                               },
                             ),
@@ -232,37 +232,41 @@ class MyHomePage extends StatelessWidget {
               color: Colors.black,
             ),
             Expanded(
-                child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      'Корзина',
-                      style: Theme.of(context).textTheme.headline6,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'Корзина',
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
                     ),
-                  ),
-                  Column(
-                    children: [
-                      ...productBlock.show().keys.map(
-                            (e) => ListTile(
-                              title: Text(
-                                'Товар ${e.id}',
+                    Column(
+                      children: [
+                        ...widget.productBlock.show().keys.map(
+                              (e) => ListTile(
+                                title: Text(
+                                  'Товар ${e.id}',
+                                ),
+                                trailing:
+                                    Text('x ${widget.productBlock.show()[e]}'),
                               ),
-                              trailing: Text('x ${productBlock.show()[e]}'),
                             ),
-                          ),
-                    ],
-                  )
-                ],
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ))
+            )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          widget.clear();
+        },
         // onPressed: () => _prodUpdate(state),
         tooltip: 'Increment',
         child: const Icon(Icons.delete),
@@ -271,3 +275,112 @@ class MyHomePage extends StatelessWidget {
     );
   }
 }
+
+
+
+// class MyHomePage extends StatelessWidget {
+//   const MyHomePage(
+//       {Key? key,
+//       required this.title,
+//       required this.add,
+//       required this.productBlock,
+//       required this.clear,
+//       required this.toCart,
+//       required this.initFunc})
+//       : super(key: key);
+
+//   final String title;
+//   final ProductBlock productBlock;
+//   final VoidCallback toCart;
+//   final VoidCallback clear;
+//   final VoidCallback add;
+//   final Function initFunc;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     print('MyHomePage started');
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text(title),
+//       ),
+//       body: Center(
+//         child: Column(
+//           children: [
+//             Expanded(
+//               child: SingleChildScrollView(
+//                 child: Column(
+//                   children: [
+//                     Container(
+//                       alignment: Alignment.topLeft,
+//                       padding: const EdgeInsets.all(8),
+//                       child: Text(
+//                         'Полка товаров',
+//                         style: Theme.of(context).textTheme.headline6,
+//                       ),
+//                     ),
+//                     ...productBlock.goods().keys.map(
+//                           (e) => ListTile(
+//                             title: Text(
+//                               'Товар ${e.id}',
+//                             ),
+//                             trailing: IconButton(
+//                               icon: const Icon(Icons.add_box_outlined),
+//                               onPressed: () async {
+//                                 productBlock.addToCart(e);
+//                                 toCart;
+//                                 // add;
+//                               },
+//                             ),
+//                           ),
+//                         ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//             const Divider(
+//               height: 20,
+//               color: Colors.black,
+//             ),
+//             Expanded(
+//               child: SingleChildScrollView(
+//                 child: Column(
+//                   children: [
+//                     Container(
+//                       padding: const EdgeInsets.all(8),
+//                       alignment: Alignment.topLeft,
+//                       child: Text(
+//                         'Корзина',
+//                         style: Theme.of(context).textTheme.headline6,
+//                       ),
+//                     ),
+//                     Column(
+//                       children: [
+//                         ...productBlock.show().keys.map(
+//                               (e) => ListTile(
+//                                 title: Text(
+//                                   'Товар ${e.id}',
+//                                 ),
+//                                 trailing: Text('x ${productBlock.show()[e]}'),
+//                               ),
+//                             ),
+//                       ],
+//                     )
+//                   ],
+//                 ),
+//               ),
+//             )
+//           ],
+//         ),
+//       ),
+//       floatingActionButton: FloatingActionButton(
+//         onPressed: () {
+//           clear();
+//         },
+//         // onPressed: () => _prodUpdate(state),
+//         tooltip: 'Increment',
+//         child: const Icon(Icons.delete),
+//         elevation: 50,
+//       ),
+//     );
+//   }
+// }
