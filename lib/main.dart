@@ -43,7 +43,7 @@ ProductBlock _clear(ProductBlock productBlock, ProductBlockClearAction action) {
 
 ProductBlock _add(ProductBlock productBlock, ProductBlockAddAction action) {
   print('ProductBlock _add');
-  productBlock.createPrd(5);
+  productBlock.createProducts(5);
   return productBlock;
   // ProductBlock _newProductBlock = duplicate(productBlock);
   // _newProductBlock.createPrd(5);
