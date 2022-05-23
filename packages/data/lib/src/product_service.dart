@@ -1,10 +1,10 @@
 import 'package:product_model/model.dart';
 
 abstract class ProductService {
-  Map<ProductData, int> array = {};
+  Map<ProductData, int> products = {};
   Future<Map<ProductData, int>> createProducts(int number);
-  Future<Map<ProductData, int>> give();
+  Future<Map<ProductData, int>> productsStructurer();
   List<ProductData> myCart = [];
-  Map<ProductData, int> out = {};
-  void cleane();
+  Map<ProductData, int> myCartStructured = {};
+  void clean();
 }

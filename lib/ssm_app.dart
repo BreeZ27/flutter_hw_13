@@ -56,7 +56,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _cartCleaner() {
-    context.read<ProductBlock>().cleane();
+    context.read<ProductBlock>().clean();
+  }
+
+  @override
+  void initState() {
+    context.read<ProductBlock>().createProducts(5);
+    super.initState();
   }
 
   @override
