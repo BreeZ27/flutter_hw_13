@@ -6,6 +6,15 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 GetIt getIt = GetIt.instance;
 
+duplicate(ProductBlock inlet) {
+  ProductBlock _outlet = ProductBlock();
+  _outlet.productService.myCartStructured =
+      inlet.productService.myCartStructured;
+  _outlet.productService.products = inlet.productService.products;
+  _outlet.productService.myCart = inlet.productService.myCart;
+  return _outlet;
+}
+
 // final productBlockProvider = Provider<ProductBlock>((ref) {
 //   return ProductBlock(productService: getIt.get<ProductService>());
 // });
