@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:product_model/model.dart';
 
 @LazySingleton(as: ProductService)
-class MyProductService implements ProductService {
+class ProductServiceImpl implements ProductService {
   static int index = 0;
 
   @override
@@ -21,8 +21,20 @@ class MyProductService implements ProductService {
     return products;
   }
 
+  // @override
+  // Future<ProductData> getProductWithId(int id) async {
+  //   Future.delayed(const Duration(seconds: 1));
+  //   for (ProductData product in products.keys) {
+  //     if (product.id == id) {
+  //       return product;
+  //     } else {
+  //       return null;
+  //     }
+  //   }
+  // }
+
   @override
-  Future<Map<ProductData, int>> give() async {
+  Future<Map<ProductData, int>> productsStructurer() async {
     Map<ProductData, int> _answer = {};
 
     await Future.delayed(const Duration(seconds: 1));
@@ -35,17 +47,17 @@ class MyProductService implements ProductService {
       }
     }
 
-    return out = _answer;
+    return myCartStructured = _answer;
   }
 
   @override
-  cleane() {
+  clean() {
     myCart.clear();
-    out.clear();
+    myCartStructured.clear();
   }
 
   @override
-  Map<ProductData, int> out = {};
+  Map<ProductData, int> myCartStructured = {};
 
   @override
   List<ProductData> myCart = [];

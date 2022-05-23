@@ -30,16 +30,22 @@ class MyHomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (starter == 0) {
+      ref.watch(productBlockProvider.notifier).createProducts(5);
+      starter++;
+    }
+
     final store = ref.watch(productBlockProvider);
     final provider = ref.watch(productBlockProvider.notifier);
 
-    void _cartUpdate(item) {
-      provider.addProd(item);
-      store.addToCart(item);
+    void _cartUpdate(item) async {
+      print('_cartUpdate');
+      await provider.addProd(item);
+      // await store.addToCart(item);
     }
 
     void _cartCleaner() {
-      provider.cleaning();
+      provider.clean();
     }
 
     return Scaffold(
@@ -59,14 +65,16 @@ class MyHomePage extends ConsumerWidget {
                         style: Theme.of(context).textTheme.headline6,
                       ),
                     ),
-                    ...provider.giveGoods().keys.map(
+                    ...store.goods().keys.map(
                       (e) {
                         return ListTile(
                           title: Text(
                             'Товар ${e.id}',
                           ),
                           trailing: const Icon(Icons.add_box),
-                          onTap: () => _cartUpdate(e),
+                          onTap: () {
+                            _cartUpdate(e);
+                          },
                         );
                       },
                     ),
@@ -87,7 +95,7 @@ class MyHomePage extends ConsumerWidget {
                   SingleChildScrollView(
                     child: Column(
                       children: [
-                        ...provider.giveShow().keys.map(
+                        ...store.show().keys.map(
                               (e) => ListTile(
                                 title: Text(
                                   'Товар ${e.id}',

@@ -16,6 +16,6 @@ import 'product_service_impl.dart'
 _i1.GetIt $initGetIt(_i1.GetIt get,
     {String? environment, _i2.EnvironmentFilter? environmentFilter}) {
   final gh = _i2.GetItHelper(get, environment, environmentFilter);
-  gh.lazySingleton<_i3.ProductService>(() => _i4.MyProductService());
+  gh.lazySingleton<_i3.ProductService>(() => _i4.ProductServiceImpl());
   return get;
 }

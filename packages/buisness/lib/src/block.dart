@@ -1,6 +1,4 @@
-import 'dart:async';
 import 'package:data/data.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,16 +18,24 @@ final productBlockProvider =
 // @injectable
 class ProductBlockNotifier extends StateNotifier<ProductBlock> {
   ProductBlockNotifier(this.ref)
-      : super(ProductBlock(productService: getIt.get<ProductService>()));
+      : super(ProductBlock(productService: getIt.get<ProductService>())) {}
 
   final Ref ref;
 
-  void addProd(item) {
-    state.addToCart(item);
+  Future<void> addProd(item) async {
+    await state.addToCart(item);
+    state = state;
     // state.productService.myCart = [...state.productService.myCart, item];
   }
 
-  void cleaning() => state.cleane();
+  Future<void> createProducts(int i) async {
+    // _newState = d
+    await state.createProducts(i);
+    print('ProductBlockNotifier createProducts');
+    state = state;
+  }
+
+  void clean() => state.clean();
   giveGoods() => state.goods();
   giveShow() => state.show();
   giveSum() => state.sum();
@@ -45,33 +51,38 @@ class ProductBlockNotifier extends StateNotifier<ProductBlock> {
 class ProductBlock {
   static int index = 0;
   final ProductService productService;
-  ProductBlock({required this.productService}) {
-    productService.createProducts(5);
-    index++;
-    print('index $index');
+  ProductBlock({required this.productService});
+
+  createProducts(int i) async {
+    await productService.createProducts(5);
   }
 
-  addToCart(item) {
+  Future<void> addToCart(item) async {
     productService.myCart.add(item);
-    productService.give();
-    print("BLOCK ADD");
+    await productService.productsStructurer();
+    print("addToCart productService.myCart: ${productService.myCart}");
+    print(
+        "addToCart productService.myCartStructured: ${productService.myCartStructured}");
   }
 
-  void cleane() => productService.cleane();
+  void clean() {
+    productService.clean();
+    print('clean: ${productService.myCartStructured}');
+  }
 
   void create(i) async {
     await productService.createProducts(5);
   }
 
   goods() {
-    return productService.array;
+    return productService.products;
   }
 
-  show() => productService.out;
+  show() => productService.myCartStructured;
 
   sum() {
     var _res = 0;
-    for (var item in productService.out.values) {
+    for (var item in productService.myCartStructured.values) {
       _res += item;
     }
     _res *= 48;
