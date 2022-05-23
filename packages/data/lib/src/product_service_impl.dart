@@ -1,4 +1,4 @@
-import 'back.dart';
+import 'product_service.dart';
 import 'package:injectable/injectable.dart';
 import 'package:product_model/model.dart';
 
@@ -7,7 +7,7 @@ class MyProductService implements ProductService {
   static int index = 0;
 
   @override
-  Map<ProductData, int> array = {};
+  Map<ProductData, int> products = {};
 
   @override
   Future<Map<ProductData, int>> createProducts(int number) async {
@@ -15,10 +15,10 @@ class MyProductService implements ProductService {
 
     for (var i = index; i < index + number; i++) {
       print('DATA: Product with index $i created');
-      array[ProductData(id: i)] = i;
+      products[ProductData(id: i)] = i;
     }
     index += number;
-    return array;
+    return products;
   }
 
   @override

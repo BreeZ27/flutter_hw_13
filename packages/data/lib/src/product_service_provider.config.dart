@@ -7,8 +7,9 @@
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
-import 'back.dart' as _i3;
-import 'fullback.dart' as _i4; // ignore_for_file: unnecessary_lambdas
+import 'product_service.dart' as _i3;
+import 'product_service_impl.dart'
+    as _i4; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
