@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       home: BlocProvider(
         lazy: false,
         create: (_) => MyBLoc(),
-        child: const MyHomePage(
+        child: MyHomePage(
           title: 'Flutter_hw_13',
         ),
       ),
@@ -27,18 +27,27 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    context.read<MyBLoc>().add(ProductBlockEvent.add);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     print('Page build');
-    context.read<MyBLoc>().add(ProductBlockEvent.add);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(widget.title),
       ),
       body: Center(
         child: Column(
