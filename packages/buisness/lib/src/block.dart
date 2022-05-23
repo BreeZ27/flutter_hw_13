@@ -1,68 +1,70 @@
 import 'package:data/data.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:product_model/model.dart';
 
 GetIt getIt = GetIt.instance;
 
-duplicate(ProductBlock inlet) {
-  ProductBlock _outlet = ProductBlock();
-  _outlet.productService.myCartStructured =
-      inlet.productService.myCartStructured;
-  _outlet.productService.products = inlet.productService.products;
-  _outlet.productService.myCart = inlet.productService.myCart;
-  return _outlet;
-}
+// duplicate(ProductBlock inlet) {
+//   ProductBlock _outlet = ProductBlock();
+//   _outlet.productService.myCartStructured =
+//       inlet.productService.myCartStructured;
+//   _outlet.productService.products = inlet.productService.products;
+//   _outlet.productService.myCart = inlet.productService.myCart;
+//   return _outlet;
+// }
 
 // final productBlockProvider = Provider<ProductBlock>((ref) {
 //   return ProductBlock(productService: getIt.get<ProductService>());
 // });
 
-final productBlockProvider =
-    StateNotifierProvider<ProductBlockNotifier, ProductBlock>((ref) {
-  return ProductBlockNotifier(ref);
+final ProductBlock productBlock = ProductBlock();
+
+final productsProvider =
+    StateNotifierProvider<ProductBlockNotifier, Map<ProductData, int>>((ref) {
+  return ProductBlockNotifier();
 });
 
-// @injectable
-class ProductBlockNotifier extends StateNotifier<ProductBlock> {
-  ProductBlockNotifier(this.ref)
-      : super(ProductBlock(productService: getIt.get<ProductService>())) {}
-
-  final Ref ref;
-
-  Future<void> addProd(item) async {
-    await state.addToCart(item);
-    state = state;
-    // state.productService.myCart = [...state.productService.myCart, item];
-  }
+class ProductBlockNotifier extends StateNotifier<Map<ProductData, int>> {
+  ProductBlockNotifier() : super({});
 
   Future<void> createProducts(int i) async {
-    // _newState = d
-    await state.createProducts(i);
-    print('ProductBlockNotifier createProducts');
-    state = state;
+    await productBlock.createProducts(5);
+    state = {...productBlock.goods()};
   }
-
-  void clean() => state.clean();
-  giveGoods() => state.goods();
-  giveShow() => state.show();
-  giveSum() => state.sum();
 }
 
-// @injectable
-// class ProductBlock extends StateNotifier<ProductBlock> {
-//   final ProductService productService = getIt.get<ProductService>();
+final cartProvider =
+    StateNotifierProvider<CartNotifier, Map<ProductData, int>>((ref) {
+  return CartNotifier();
+});
 
-// ProductBlock() :super()
-// @immutable
+class CartNotifier extends StateNotifier<Map<ProductData, int>> {
+  CartNotifier() : super({});
+
+  Future<void> addProd(ProductData item) async {
+    await productBlock.addToCart(item);
+    state = {...productBlock.show()};
+  }
+
+  void clean() {
+    productBlock.clean();
+    state = {...productBlock.show()};
+  }
+
+  sum() {
+    return productBlock.sum();
+  }
+}
+
 @injectable
 class ProductBlock {
-  static int index = 0;
-  final ProductService productService;
-  ProductBlock({required this.productService});
+  final ProductService productService = getIt.get<ProductService>();
 
-  createProducts(int i) async {
+  Future<void> createProducts(int i) async {
     await productService.createProducts(5);
   }
 
