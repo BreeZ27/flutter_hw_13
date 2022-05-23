@@ -88,4 +88,13 @@ class ProductBlock {
     print('ProductBlock.show(): ${productService.myCartStructured}');
     return productService.myCartStructured;
   }
+
+  sum() {
+    var res = 0;
+    for (var item in productService.myCartStructured.values) {
+      res += item;
+    }
+    res *= 48;
+    return res;
+  }
 }
