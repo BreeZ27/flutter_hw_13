@@ -1,13 +1,13 @@
-import 'back.dart';
+import 'product_service.dart';
 import 'package:injectable/injectable.dart';
 import 'package:product_model/model.dart';
 
 @LazySingleton(as: ProductService)
-class MyProductService implements ProductService {
+class ProductServiceImpl implements ProductService {
   static int index = 0;
 
   @override
-  Map<ProductData, int> array = {};
+  Map<ProductData, int> products = {};
 
   @override
   Future<Map<ProductData, int>> createProducts(int number) async {
@@ -15,14 +15,14 @@ class MyProductService implements ProductService {
 
     for (var i = index; i < index + number; i++) {
       print('DATA: Product with index $i created');
-      array[ProductData(id: i)] = i;
+      products[ProductData(id: i)] = i;
     }
     index += number;
-    return array;
+    return products;
   }
 
   @override
-  Future<Map<ProductData, int>> give() async {
+  Future<Map<ProductData, int>> productsStructurer() async {
     Map<ProductData, int> _answer = {};
 
     await Future.delayed(const Duration(seconds: 1));
@@ -35,17 +35,17 @@ class MyProductService implements ProductService {
       }
     }
 
-    return out = _answer;
+    return myCartStructured = _answer;
   }
 
   @override
-  cleane() {
+  clean() {
     myCart.clear();
-    out.clear();
+    myCartStructured.clear();
   }
 
   @override
-  Map<ProductData, int> out = {};
+  Map<ProductData, int> myCartStructured = {};
 
   @override
   List<ProductData> myCart = [];

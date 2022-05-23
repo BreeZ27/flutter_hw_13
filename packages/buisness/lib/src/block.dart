@@ -41,7 +41,7 @@ class MyBLoc {
   void addProduct(ProductData item) async {
     print('MyBLoc._addProduct($item)');
     productBlock.addToCart(item);
-    await productBlock.give();
+    await productBlock.productsStructurer();
     _stateContrl1.add(productBlock.show());
   }
 
@@ -68,21 +68,21 @@ class ProductBlock {
 
   void cleaning() {
     productService.myCart.clear();
-    productService.out.clear();
+    productService.myCartStructured.clear();
   }
 
-  give() async {
-    await productService.give();
-    print('ProductBlock.give(): ${productService.out}');
+  productsStructurer() async {
+    await productService.productsStructurer();
+    print('ProductBlock.give(): ${productService.myCartStructured}');
   }
 
   goods() {
-    print('ProductBlock.goods(): ${productService.array}');
-    return productService.array;
+    print('ProductBlock.goods(): ${productService.products}');
+    return productService.products;
   }
 
   show() {
-    print('ProductBlock.show(): ${productService.out}');
-    return productService.out;
+    print('ProductBlock.show(): ${productService.myCartStructured}');
+    return productService.myCartStructured;
   }
 }
