@@ -1,17 +1,16 @@
 import 'package:buisness/buisness.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:get_it/get_it.dart';
+// import 'package:provider/provider.dart';
+// import 'package:get_it/get_it.dart';
 import 'package:product_model/model.dart';
 
 void main() {
-  // getIt.registerLazySingleton<ProductBlock>((_) => ProductBlock());
   initializeBlocs();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   // final ProductBlock _prodBlock = GetIt.I.get<ProductBlock>();
 
@@ -93,14 +92,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                         _prodBlock.addAction.add(e);
                                         print('Товар $e добавлен в поток');
                                       },
-                                      icon: Icon(Icons.add_box_outlined)),
+                                      icon: const Icon(Icons.add_box_outlined)),
                                 ),
                               ),
                             ],
                           );
                         } else {
                           print('no snapshot.data');
-                          return Center(child: CircularProgressIndicator());
+                          return const Center(
+                              child: CircularProgressIndicator());
                         }
                       },
                     ),
@@ -132,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           print('CART snapshot.data: ${snapshot.data}');
                           var _out = snapshot.data;
                           if (_out!.isEmpty == true) {
-                            return Center(child: Text('Корзина пуста'));
+                            return const Center(child: Text('Корзина пуста'));
                           } else {
                             return Column(
                               children: [
@@ -151,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           }
                         } else {
                           print('no snapshot.data');
-                          return Center(child: Text('Корзина пуста'));
+                          return const Center(child: Text('Корзина пуста'));
                         }
                       },
                     ),

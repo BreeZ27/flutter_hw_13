@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:data/data.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:product_model/model.dart';
 
 GetIt getIt = GetIt.instance;
@@ -73,7 +72,7 @@ class MyBLoc {
 class ProductBlock {
   final ProductService productService = getIt.get<ProductService>();
 
-  ProductBlock() {}
+  ProductBlock();
 
   void addToCart(item) {
     productService.myCart.add(item);
@@ -85,21 +84,21 @@ class ProductBlock {
   }
 
   void cleaning() {
-    productService.cleane();
+    productService.clean();
   }
 
   give() async {
-    await productService.give();
-    print('ProductBlock.give(): ${productService.out}');
+    await productService.productsStructurer();
+    print('ProductBlock.give(): ${productService.myCartStructured}');
   }
 
   goods() {
-    print('ProductBlock.goods(): ${productService.array}');
-    return productService.array;
+    print('ProductBlock.goods(): ${productService.products}');
+    return productService.products;
   }
 
   show() {
-    print('ProductBlock.show(): ${productService.out}');
-    return productService.out;
+    print('ProductBlock.show(): ${productService.myCartStructured}');
+    return productService.myCartStructured;
   }
 }
