@@ -14,9 +14,11 @@ class MyCubit {
 
   final _stateContrl1 = StreamController<Map<ProductData, int>>();
   final _stateContrl2 = StreamController<Map<ProductData, int>>();
+  final _sumContrl = StreamController<int>();
 
   Stream<Map<ProductData, int>> get cartState => _stateContrl1.stream;
   Stream<Map<ProductData, int>> get goodsState => _stateContrl2.stream;
+  Stream<int> get sumState => _sumContrl.stream;
 
   void handleEvent(ProductBlockEvent action) async {
     switch (action) {
@@ -36,6 +38,7 @@ class MyCubit {
     await Future.delayed(const Duration(seconds: 2));
     _stateContrl2.add(productBlock.goods());
     _stateContrl1.add(productBlock.show());
+    _sumContrl.add(productBlock.sum());
   }
 
   void addProduct(ProductData item) async {
@@ -43,6 +46,7 @@ class MyCubit {
     productBlock.addToCart(item);
     await productBlock.productsStructurer();
     _stateContrl1.add(productBlock.show());
+    _sumContrl.add(productBlock.sum());
   }
 
   void dispose() {
@@ -84,5 +88,14 @@ class ProductBlock {
   show() {
     print('ProductBlock.show(): ${productService.myCartStructured}');
     return productService.myCartStructured;
+  }
+
+  sum() {
+    var res = 0;
+    for (var item in productService.myCartStructured.values) {
+      res += item;
+    }
+    res *= 48;
+    return res;
   }
 }

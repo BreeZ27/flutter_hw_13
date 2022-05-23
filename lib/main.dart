@@ -1,17 +1,14 @@
 import 'package:buisness/buisness.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:get_it/get_it.dart';
 import 'package:product_model/model.dart';
 
 void main() {
-  // getIt.registerLazySingleton<ProductBlock>((_) => ProductBlock());
   initializeBlocs();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   // final ProductBlock _prodBlock = GetIt.I.get<ProductBlock>();
 
@@ -94,14 +91,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                         _prodBlock.addProduct(e);
                                         print('Товар $e добавлен в поток');
                                       },
-                                      icon: Icon(Icons.add_box_outlined)),
+                                      icon: const Icon(Icons.add_box_outlined)),
                                 ),
                               ),
                             ],
                           );
                         } else {
                           print('no snapshot.data');
-                          return Center(child: CircularProgressIndicator());
+                          return const Center(
+                              child: CircularProgressIndicator());
                         }
                       },
                     ),
@@ -159,7 +157,19 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
-            )
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: StreamBuilder(
+                stream: _prodBlock.sumState,
+                builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                  return Text(
+                    'К оплате: ${snapshot.data} у.е.',
+                    style: Theme.of(context).textTheme.headline6,
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
