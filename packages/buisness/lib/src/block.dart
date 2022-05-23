@@ -8,7 +8,7 @@ GetIt getIt = GetIt.instance;
 
 enum ProductBlockEvent { clear, add, toCart }
 
-class MyBLoC extends Cubit<ProductBlock> {
+class MyCubit extends Cubit<ProductBlock> {
   // Переменная, которая при инициализации и вызове метода add() один раз
   //создаёт товары в Map array
   static int init = 0;
@@ -17,17 +17,18 @@ class MyBLoC extends Cubit<ProductBlock> {
   // используется для передачи в функцию emit нового состояния ProductBlock
   duplicate(ProductBlock inlet) {
     ProductBlock _outlet = ProductBlock();
-    _outlet.productService.out = inlet.productService.out;
-    _outlet.productService.array = inlet.productService.array;
+    _outlet.productService.myCartStructured =
+        inlet.productService.myCartStructured;
+    _outlet.productService.products = inlet.productService.products;
     _outlet.productService.myCart = inlet.productService.myCart;
     return _outlet;
   }
 
-  MyBLoC() : super(ProductBlock());
+  MyCubit() : super(ProductBlock());
 
-  void add() {
+  Future<void> add() async {
     if (init == 0) {
-      state.createProducts(5);
+      await state.createProducts(5);
       init++;
     }
     emit(duplicate(state));
@@ -40,7 +41,7 @@ class MyBLoC extends Cubit<ProductBlock> {
 
   void toCart(ProductData e) async {
     state.addToCart(e);
-    await state.give();
+    await state.productsStructurer();
     emit(duplicate(state));
   }
 }
@@ -60,8 +61,8 @@ class ProductBlock {
   }
 
   // Функция, которая создаёт указанное количество товаров в Map array
-  void createProducts(int value) {
-    productService.createProducts(value);
+  Future<void> createProducts(int value) async {
+    await productService.createProducts(value);
   }
 
   // Функция которая очищает корзину и форматированный Map out
@@ -71,20 +72,20 @@ class ProductBlock {
 
   // Функция, которая оценивает количсество каждого товара в корзине и
   //формирует Map, который передает в переменную out
-  give() async {
-    await productService.give();
-    print('ProductBlock.give(): ${productService.out}');
+  productsStructurer() async {
+    await productService.productsStructurer();
+    print('ProductBlock.give(): ${productService.myCartStructured}');
   }
 
   // Функция, которая возвращает Map с существующими товарами
   goods() {
-    print('ProductBlock.goods(): ${productService.array}');
-    return productService.array;
+    print('ProductBlock.goods(): ${productService.products}');
+    return productService.products;
   }
 
   // Функция, которая возвращает Map с товарами в корзине и их количеством
   show() {
-    print('ProductBlock.show(): ${productService.out}');
-    return productService.out;
+    print('ProductBlock.show(): ${productService.myCartStructured}');
+    return productService.myCartStructured;
   }
 }

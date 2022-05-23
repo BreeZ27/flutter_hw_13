@@ -18,8 +18,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.blue),
       home: BlocProvider(
         lazy: false,
-        create: (_) => MyBLoC(),
-        child: const MyHomePage(
+        create: (_) => MyCubit(),
+        child: MyHomePage(
           title: 'Flutter_hw_13',
         ),
       ),
@@ -27,18 +27,27 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    context.read<MyCubit>().add();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     print('Page build');
-    context.read<MyBLoC>().add();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(widget.title),
       ),
       body: Center(
         child: Column(
@@ -55,7 +64,7 @@ class MyHomePage extends StatelessWidget {
                         style: Theme.of(context).textTheme.headline6,
                       ),
                     ),
-                    BlocBuilder<MyBLoC, ProductBlock>(
+                    BlocBuilder<MyCubit, ProductBlock>(
                       builder: (context, state) {
                         return Column(
                           children: [
@@ -65,9 +74,11 @@ class MyHomePage extends StatelessWidget {
                                       'Товар ${e.id}',
                                     ),
                                     trailing: IconButton(
-                                      onPressed: () {
+                                      onPressed: () async {
+                                        // state.addToCart(e);
+                                        // await state.productsStructurer();
                                         print('Товар $e добавлен в поток');
-                                        context.read<MyBLoC>().toCart(e);
+                                        context.read<MyCubit>().toCart(e);
                                       },
                                       icon: const Icon(Icons.add_box_outlined),
                                     ),
@@ -97,7 +108,7 @@ class MyHomePage extends StatelessWidget {
                         style: Theme.of(context).textTheme.headline6,
                       ),
                     ),
-                    BlocBuilder<MyBLoC, ProductBlock>(
+                    BlocBuilder<MyCubit, ProductBlock>(
                       builder: (context, state) {
                         if (state.show().isEmpty == true) {
                           return const Center(child: Text('Корзина пуста'));
@@ -128,7 +139,7 @@ class MyHomePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.read<MyBLoC>().clear();
+          context.read<MyCubit>().clear();
         },
         tooltip: 'Increment',
         child: const Icon(Icons.delete),
