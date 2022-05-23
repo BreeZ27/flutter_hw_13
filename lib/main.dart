@@ -11,8 +11,9 @@ void main() {
 
 duplicate(ProductBlock inlet) {
   ProductBlock _outlet = ProductBlock();
-  _outlet.productService.out = inlet.productService.out;
-  _outlet.productService.array = inlet.productService.array;
+  _outlet.productService.myCartStructured =
+      inlet.productService.myCartStructured;
+  _outlet.productService.products = inlet.productService.products;
   _outlet.productService.myCart = inlet.productService.myCart;
   return _outlet;
 }
@@ -53,7 +54,7 @@ ProductBlock _add(ProductBlock productBlock, ProductBlockAddAction action) {
 ProductBlock _toCart(
     ProductBlock productBlock, ProductBlockToCartAction action) {
   print('ProductBlock _toCart');
-  productBlock.give();
+  productBlock.productsStructurer();
   return productBlock;
   // ProductBlock _newProductBlock = duplicate(productBlock);
   // _newProductBlock.give();
