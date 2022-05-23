@@ -135,7 +135,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
-            )
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                '',
+                // 'К оплате: ${context.watch<ProductBlock>().sum()} у.е.',
+                style: Theme.of(context).textTheme.headline6,
+              ),
+            ),
           ],
         ),
       ),
