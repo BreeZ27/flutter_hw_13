@@ -12,8 +12,9 @@ class MyBLoc extends Bloc<ProductBlockEvent, ProductBlock> {
 
   duplicate(ProductBlock inlet) {
     ProductBlock _outlet = ProductBlock();
-    _outlet.productService.out = inlet.productService.out;
-    _outlet.productService.array = inlet.productService.array;
+    _outlet.productService.myCartStructured =
+        inlet.productService.myCartStructured;
+    _outlet.productService.products = inlet.productService.products;
     _outlet.productService.myCart = inlet.productService.myCart;
     return _outlet;
   }
@@ -65,19 +66,19 @@ class ProductBlock {
   // Функция, которая оценивает количсество каждого товара в корзине и
   //формирует Map, который передает в переменную out
   give() async {
-    await productService.give();
-    print('ProductBlock.give(): ${productService.out}');
+    await productService.productsStructurer();
+    print('ProductBlock.give(): ${productService.myCartStructured}');
   }
 
   // Функция, которая возвращает Map с существующими товарами
   goods() {
-    print('ProductBlock.goods(): ${productService.array}');
-    return productService.array;
+    print('ProductBlock.goods(): ${productService.products}');
+    return productService.products;
   }
 
   // Функция, которая возвращает Map с товарами в корзине и их количеством
   show() {
-    print('ProductBlock.show(): ${productService.out}');
-    return productService.out;
+    print('ProductBlock.show(): ${productService.myCartStructured}');
+    return productService.myCartStructured;
   }
 }

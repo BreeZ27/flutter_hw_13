@@ -21,8 +21,20 @@ class ProductServiceImpl implements ProductService {
     return products;
   }
 
+  // @override
+  // Future<ProductData> getProductWithId(int id) async {
+  //   Future.delayed(const Duration(seconds: 1));
+  //   for (ProductData product in products.keys) {
+  //     if (product.id == id) {
+  //       return product;
+  //     } else {
+  //       return null;
+  //     }
+  //   }
+  // }
+
   @override
-  Future<Map<ProductData, int>> give() async {
+  Future<Map<ProductData, int>> productsStructurer() async {
     Map<ProductData, int> _answer = {};
 
     await Future.delayed(const Duration(seconds: 1));
