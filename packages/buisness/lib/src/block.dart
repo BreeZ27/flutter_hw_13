@@ -19,33 +19,22 @@ class MyBLoc extends Bloc<ProductBlockEvent, ProductBlock> {
   }
 
   MyBLoc() : super(ProductBlock()) {
-    on(
-      (ProductBlockEvent event, emit) async {
-        switch (event) {
-          case ProductBlockEvent.add:
-            print('ProductBlockEvent.add');
-            if (init == 0) {
-              state.createProducts(5);
-              init++;
-              return emit(duplicate(state));
-            } else {
-              return emit(state);
-            }
-
-          case ProductBlockEvent.clear:
-            state.clean();
-            return emit(duplicate(state));
-
-          case (ProductBlockEvent.toCart):
-            print('ProductBlockEvent.toCart');
-            return emit(duplicate(state));
-
-          default:
-            state.createProducts(5);
-            return emit(duplicate(state));
+    on((ProductBlockEvent event, emit) async {
+      if (event == ProductBlockEvent.add) {
+        print('ProductBlockEvent.add');
+        if (init == 0) {
+          await state.createProducts(5);
+          init++;
         }
-      },
-    );
+      }
+      if (event == ProductBlockEvent.clear) {
+        state.clean();
+      }
+      if (event == ProductBlockEvent.toCart) {
+        print('ProductBlockEvent.toCart');
+      }
+      emit(duplicate(state));
+    });
   }
 }
 
@@ -64,8 +53,8 @@ class ProductBlock {
   }
 
   // Функция, которая создаёт указанное количество товаров в Map array
-  void createProducts(int value) {
-    productService.createProducts(value);
+  Future<void> createProducts(int value) async {
+    await productService.createProducts(value);
   }
 
   // Функция которая очищает корзину и форматированный Map out
