@@ -19,10 +19,13 @@ class MyBLoc {
   final _stateContrl1 = StreamController<Map<ProductData, int>>();
   final _stateContrl2 = StreamController<Map<ProductData, int>>();
 
+  final _sumContrl = StreamController<int>();
+
   Stream<ProductBlock> get state => _stateContrl.stream;
 
   Stream<Map<ProductData, int>> get cartState => _stateContrl1.stream;
   Stream<Map<ProductData, int>> get goodsState => _stateContrl2.stream;
+  Stream<int> get cartSum => _sumContrl.stream;
 
   Sink<ProductBlockEvent> get action => _eventContrl.sink;
   Sink<ProductData> get addAction => _cartContrl.sink;
@@ -42,7 +45,7 @@ class MyBLoc {
         print('_handleEvent clear');
         break;
       case ProductBlockEvent.add:
-        productBlock.createPrd(5);
+        productBlock.createProducts(5);
         print('_handleEvent add');
         break;
       default:
@@ -53,6 +56,7 @@ class MyBLoc {
     await Future.delayed(const Duration(seconds: 2));
     _stateContrl2.add(productBlock.goods());
     _stateContrl1.add(productBlock.show());
+    _sumContrl.add(productBlock.sum());
   }
 
   void _addProduct(ProductData item) async {
@@ -60,6 +64,7 @@ class MyBLoc {
     productBlock.addToCart(item);
     await productBlock.give();
     _stateContrl1.add(productBlock.show());
+    _sumContrl.add(productBlock.sum());
   }
 
   void dispose() {
@@ -79,7 +84,7 @@ class ProductBlock {
     print('addToCart: ${productService.myCart}');
   }
 
-  void createPrd(int value) {
+  void createProducts(int value) {
     productService.createProducts(value);
   }
 
@@ -100,5 +105,14 @@ class ProductBlock {
   show() {
     print('ProductBlock.show(): ${productService.myCartStructured}');
     return productService.myCartStructured;
+  }
+
+  sum() {
+    var res = 0;
+    for (var item in productService.myCartStructured.values) {
+      res += item;
+    }
+    res *= 48;
+    return res;
   }
 }

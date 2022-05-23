@@ -158,7 +158,23 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
-            )
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: StreamBuilder(
+                  stream: _prodBlock.cartSum,
+                  builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                    if (snapshot.hasData) {
+                      return Text(
+                        'К оплате: ${_prodBlock.productBlock.sum()} у.е.',
+                        style: Theme.of(context).textTheme.headline6,
+                      );
+                    } else {
+                      return Text('К оплате: 0 у.е.',
+                          style: Theme.of(context).textTheme.headline6);
+                    }
+                  }),
+            ),
           ],
         ),
       ),
