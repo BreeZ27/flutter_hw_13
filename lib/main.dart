@@ -38,11 +38,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late final MyBLoc _prodBlock;
+  late final MyCubit _prodBlock;
 
   @override
   void initState() {
-    _prodBlock = MyBLoc();
+    _prodBlock = MyCubit();
     _prodBlock.handleEvent(ProductBlockEvent.add);
 
     super.initState();

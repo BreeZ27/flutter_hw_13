@@ -9,7 +9,7 @@ GetIt getIt = GetIt.instance;
 
 enum ProductBlockEvent { clear, add, toCart }
 
-class MyBLoc {
+class MyCubit {
   final ProductBlock productBlock = ProductBlock();
 
   final _stateContrl1 = StreamController<Map<ProductData, int>>();
